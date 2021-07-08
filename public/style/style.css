@@ -6,20 +6,23 @@
 } 
 
 .second{
-    border-radius: 0.5em;
+    /* border-radius: 0.5em; */
     text-align: center;
 }
 
 .btn1{
     text-align: center;
-    background-color: crimson;
-    padding: 0.5em;
+    background-color: #C4C4C4;
+    /* padding: 0.5em; */
     border-radius: 0.5em;
 }
 
-img1{
+.img1{
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 50%;
+}
+.body{
+    background-color: #52B788;
 }
