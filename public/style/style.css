@@ -1,28 +1,42 @@
 /* custome-css */
 
-.first{
-    border-radius: 0.5em;
-    text-align: center;
-} 
-
-.second{
+/* homepage styling */
+.second {
     /* border-radius: 0.5em; */
     text-align: center;
+
 }
 
-.btn1{
+.btn1 {
     text-align: center;
     background-color: #C4C4C4;
     /* padding: 0.5em; */
     border-radius: 0.5em;
+    width: 35%;
 }
 
-.img1{
+
+
+.img1 {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
+    width: auto;
+    height: auto;
 }
-.body{
+
+body {
     background-color: #52B788;
 }
+
+/* donor landing screen styling */
+/* .body1 {
+    background-color: #52B788;
+    text-align: center;
+} */
+
+/* collector landing screen styling */
+
+/* depot landing screen  */
+
+

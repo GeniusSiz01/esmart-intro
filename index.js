@@ -6,12 +6,16 @@ const exphbs  = require('express-handlebars');
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
+app.use(express.static('public'));
 
 app.get('/', function (req, res) {
     res.render('home');
 });
 
-app.use(express.static('public'));
+app.get('/donor-landing-screen', function(req, res){
+  res.render('donor-landing-screen')
+
+});
 
 const PORT = process.env.PORT || 3007;
 
