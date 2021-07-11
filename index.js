@@ -16,6 +16,22 @@ app.get('/donor-landing-screen', function(req, res){
   res.render('donor-landing-screen')
 
 });
+app.get('/collector-landing-screen', function(req, res){
+  res.render('collector-landing-screen')
+
+});
+app.get('/depot-landing-screen', function(req, res){
+  res.render('depot-landing-screen')
+
+});
+app.get('/home-page-tj', function(req, res){
+  res.render('home-page-tj')
+
+});
+app.get('/select-waste-bin', function(req, res){
+  res.render('select-waste-bin')
+
+});
 
 const PORT = process.env.PORT || 3007;
 
