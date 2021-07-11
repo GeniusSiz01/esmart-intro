@@ -25,15 +25,18 @@ body {
 
 /* collector landing screen styling */
 
-/* depot landing screen  */
 
+/* Thabo and Jessie Page (home-page-tj) */
 .block {
     display: inline-block;
     width: 140px;
     height: 180px;
     background-color: lightgray;
     border-radius: 0.5em;
+    margin: 10px;
   }
-  .container  {
-    text-align: center;
-  }
+ .wrapper{
+     display: flex;
+ }
+ 
+ 
