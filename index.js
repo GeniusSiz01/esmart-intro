@@ -28,6 +28,10 @@ app.get('/home-page-tj', function(req, res){
   res.render('home-page-tj')
 
 });
+app.get('/home-page-khuzwayo', function(req, res){
+  res.render('home-page-khuzwayo')
+
+});
 app.get('/select-waste-bin', function(req, res){
   res.render('select-waste-bin')
 

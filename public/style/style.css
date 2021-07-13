@@ -5,8 +5,6 @@ body {
 }
 
 /* homepage styling */
-
-
 .btn1 {
     /* text-align: center; */
     background-color: #d8d5d5;
@@ -15,10 +13,6 @@ body {
   
     border-width: 5px;
 }
-
-
-
-
 
 /* donor landing screen styling */
 
@@ -39,4 +33,5 @@ body {
      display: flex;
  }
  
+ /* Mr Khuzwayo Home Page Styling */
  
