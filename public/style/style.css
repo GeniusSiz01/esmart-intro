@@ -11,7 +11,11 @@ body {
     /* padding: 0.5em; */
     border-radius: 0.5em;
   
-    border-width: 5px;
+    border-width: 1 px;
+
+    width: 15em;
+
+    padding: 1em;
 }
 
 /* donor landing screen styling */
@@ -34,4 +38,9 @@ body {
  }
  
  /* Mr Khuzwayo Home Page Styling */
- 
+
+ /* Mr Khuzwayo To be collected Page Styling */
+ .tbc{
+     border: solid black;
+     border-radius: 2em;
+ }

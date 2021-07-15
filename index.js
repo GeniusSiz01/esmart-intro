@@ -36,6 +36,9 @@ app.get('/select-waste-bin', function(req, res){
   res.render('select-waste-bin')
 
 });
+app.get('/to-be-collected', function(req,res){
+  res.render('to-be-collected')
+});
 
 const PORT = process.env.PORT || 3007;
 
