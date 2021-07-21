@@ -36,16 +36,11 @@ app.get('/select-waste-bin', function(req, res){
   res.render('select-waste-bin')
 
 });
-<<<<<<< HEAD
-app.get('/thank-you-screen', function(req, res){
-  res.render('thank-you-screen')
-=======
+
 app.get('/to-be-collected', function(req,res){
   res.render('to-be-collected')
 });
->>>>>>> 53e95bfdef8ac186c8ffc16ac179625c77dee817
 
-});
 app.get('/home-page-david', function(req, res){
   res.render('home-page-david')
 
