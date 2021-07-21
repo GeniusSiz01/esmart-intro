@@ -40,7 +40,46 @@ body {
  /* Mr Khuzwayo Home Page Styling */
 
  /* Mr Khuzwayo To be collected Page Styling */
- .tbc{
+ .outer{
+     background-color: aliceblue;
      border: solid black;
-     border-radius: 2em;
+     border-radius: 1em;
+     width: 350px;
+     text-align: left;
+     float: left;
+     
  }
+  
+
+ .tbc-container{
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ .tbc-box{
+     border: solid #2a9d8f;
+     border-radius:1.5em;
+     width: 400px;
+     background-color: #2a9d8f;
+ }
+
+ .details{
+     flex-basis: 70%;
+     text-align: justify;
+ }
+
+ .kilos{
+    padding-left: 20%;
+ }
+
+ .inner{
+    background-color: #b7e4c7;
+    border: solid #b7e4c7;
+    border-radius: 0.5em;
+    text-align: center;
+    padding: 1.5%;
+    width: 75px;
+    color: white;
+ } 
+
