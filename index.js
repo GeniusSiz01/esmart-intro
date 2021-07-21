@@ -36,7 +36,14 @@ app.get('/select-waste-bin', function(req, res){
   res.render('select-waste-bin')
 
 });
+app.get('/thank-you-screen', function(req, res){
+  res.render('thank-you-screen')
 
+});
+app.get('/home-page-david', function(req, res){
+  res.render('home-page-david')
+
+});
 const PORT = process.env.PORT || 3007;
 
 app.listen(PORT, function(){
