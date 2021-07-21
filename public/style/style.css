@@ -2,7 +2,6 @@
 
 body {
     background-color: #52B788;
-    margin: 0 0 55px 0;
 }
 
 /* homepage styling */
@@ -16,9 +15,7 @@ body {
 
 /* donor landing screen styling */
 
-
 /* collector landing screen styling */
-
 
 /* Thabo and Jessie Page (home-page-tj) */
 .block {
@@ -162,11 +159,9 @@ body {
      border-radius: 1em;
      width: 350px;
      text-align: left;
-     float: left;
-     
+     float: left;    
  }
   
-
  .tbc-container{
      display: flex;
      align-items: center;
@@ -196,6 +191,5 @@ body {
     text-align: center;
     padding: 1.5%;
     width: 75px;
-    color: white;
  } 
 
