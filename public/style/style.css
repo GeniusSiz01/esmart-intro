@@ -7,11 +7,24 @@ body {
 
 /* homepage styling */
 .btn1 {
+<<<<<<< HEAD
   background-color: #d8d5d5;
   border-radius: 0.5em;
   border-width: 4px;
   width: 200px;
   height: 40px;  
+=======
+    /* text-align: center; */
+    background-color: #d8d5d5;
+    /* padding: 0.5em; */
+    border-radius: 0.5em;
+  
+    border-width: 1 px;
+
+    width: 15em;
+
+    padding: 1em;
+>>>>>>> 53e95bfdef8ac186c8ffc16ac179625c77dee817
 }
 
 /* donor landing screen styling */
@@ -29,6 +42,7 @@ body {
     border-radius: 0.5em;
     margin: 10px;
   }
+<<<<<<< HEAD
 .nav {
   position:fixed;
   bottom:0;
@@ -149,3 +163,55 @@ body {
   background-color: #C4EFA1;
   border-radius: 3.5px;
 }
+=======
+ .wrapper{
+     display: flex;
+ }
+ 
+ /* Mr Khuzwayo Home Page Styling */
+
+ /* Mr Khuzwayo To be collected Page Styling */
+ .outer{
+     background-color: aliceblue;
+     border: solid black;
+     border-radius: 1em;
+     width: 350px;
+     text-align: left;
+     float: left;
+     
+ }
+  
+
+ .tbc-container{
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ .tbc-box{
+     border: solid #2a9d8f;
+     border-radius:1.5em;
+     width: 400px;
+     background-color: #2a9d8f;
+ }
+
+ .details{
+     flex-basis: 70%;
+     text-align: justify;
+ }
+
+ .kilos{
+    padding-left: 20%;
+ }
+
+ .inner{
+    background-color: #b7e4c7;
+    border: solid #b7e4c7;
+    border-radius: 0.5em;
+    text-align: center;
+    padding: 1.5%;
+    width: 75px;
+    color: white;
+ } 
+
+>>>>>>> 53e95bfdef8ac186c8ffc16ac179625c77dee817
