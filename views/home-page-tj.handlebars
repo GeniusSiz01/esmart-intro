@@ -8,7 +8,15 @@
 
 
     <div class="row">
+        {{#each bins }}
+
         <div class="col-12 center"><a href="/select-waste-bin">
+                <div class="block">
+                    <p>{{bin_type}} {{percentage}}%</p><img src="images/esmartbin.png" width="100">
+            </a></div>
+        {{/each}}
+
+        {{!-- <div class="col-12 center"><a href="/select-waste-bin">
                 <div class="block">
                     <p>General 100%</p><img src="images/esmartbin.png" width="100">
             </a></div>
@@ -20,7 +28,8 @@
         </div>
         <div class="block">
             <p>Glass 25%</p><img src="images/esmartbin.png" width="100">
-        </div>
+        </div> --}}
+
     </div>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -46,7 +55,7 @@
             <span class="nav__text">Profile</span>
         </a>
         <a href="#" class="nav__link">
-            <i class="material-icons nav_icon">list</i>
+            <i class="material-icons nav_icon">menu_open</menu></i>
             <span class="nav__text">More options</span>
         </a>
 
