@@ -55,3 +55,8 @@ waste_bin_collection_status(
     description text
 );
 db.exec('PRAGMA foreign_keys = ON;');
+
+
+
+Bin Simulator 
+fromthe simulator write an insert statemt to the databse or use local storage 
