@@ -1,5 +1,5 @@
 module.exports = function binSimulator(){
-    const binList = [
+    const  = [
         {bin_type:"general waste", percentage:0}, 
         {bin_type:"plastic waste", percentage:0},
         {bin_type:"glass waste", percentage:0},
@@ -21,3 +21,6 @@ module.exports = function binSimulator(){
       }
       return binList
 };
+
+
+
