@@ -7,7 +7,7 @@
 --     foreign key (waste_donor_id) references waste_donor(id),
 --     foreign key (waste_type_id) references waste_type(id)
 -- );
-insert into waste_bin(waste_donor_id, waste_type_id, weight, filled_capacity) values(1, 1, 19.8, 9);
-insert into waste_bin(waste_donor_id, waste_type_id, weight, filled_capacity) values(2, 2, 18.9, 3);
-insert into waste_bin(waste_donor_id, waste_type_id, weight, filled_capacity) values(3, 3, 19.5, 17);
-insert into waste_bin(waste_donor_id, waste_type_id, weight, filled_capacity) values(4, 4, 19.3, 10);
+insert into waste_bin(waste_donor_id, waste_type_id, weight, filled_capacity) values(1, 1, 19.8, 25);
+insert into waste_bin(waste_donor_id, waste_type_id, weight, filled_capacity) values(2, 2, 18.9, 50);
+insert into waste_bin(waste_donor_id, waste_type_id, weight, filled_capacity) values(3, 3, 19.5, 60);
+insert into waste_bin(waste_donor_id, waste_type_id, weight, filled_capacity) values(4, 4, 19.3, 70);

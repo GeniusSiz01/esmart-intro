@@ -6,37 +6,61 @@ module.exports = function binService(db) {
         // select bins from db - select with join
         let sql = 'select * from waste_bin join waste_type on waste_type.id=waste_type_id';
         const bins = await db.all(sql);
-        console.log(bins);
+        // console.log(bins);
         return bins;
     }
-    // async function fillBins() {
-    //     // update  the contents for your bins using update query
-    //     let sql2 = 'update waste_bin set filled_capacity=increaseFactor where waste_donor_id';
-    //     const percent = await db.all(sql2);
-    //     console.log(percent);
-    //     return percent;
-    //     // random increase
-    //     for (let i = 0; i < binList.length; i++) {
-    //         if (binList[i].percentage < 100) {
-    //             let randomNumber = Math.floor(Math.random() * 100);
-    //             if ((binList[i].percentage + randomNumber) <= 100) {
-    //                 binList[i].percentage += randomNumber;
-    //                 const increaseFactor = randomNumber
-    //             }
-    //         }
-    //     }
-    //     return binList
-    // }
-    // function markForCollection(binId) {
-    //     // boolean value whether it can be collect or not 
+    async function fillBins() {
+        // update  the contents for your bins using update query
+        let sql2 = 'update waste_bin set filled_capacity = filled_capacity + ? where waste_donor_id';
+        const percent = await db.run(sql2,3);
+        // console.log(percent);
+        return percent;
        
-    // }
-
-    // function collectBin(bindId) {
-
-    //     // change status to collected
-
-    // }
+    }
+    async function markForCollection(binId) {
+       const bin = await getBin(binId) 
+       console.log(bin) 
+        let sql3= `insert into waste_bin_collection_activity
+        (waste_bin_id, waste_donor_id, waste_bin_collection_status_id, weight_collected, date_time) 
+        values(?, ?, ?, ?, ?)`; 
+        const status = await db.run(sql3, bin.id, bin.waste_donor_id, 1, bin.weight ,new Date())
+        // console.log(status);
+        return status; 
+    }
+    async function getBin(binId){
+        let sql='select * from waste_bin where id=?'
+        const bin = await db.get(sql, binId);
+        // console.log(bin);
+        return bin;
+    }
+    async function getBinsReadyForCollection() {
+        // select bins from db - select with where
+        let sql = 'select * from waste_bin where filled_capacity>=80'
+        const threshold = await db.all(sql);
+        // console.log(threshold);
+        return threshold;
+    }
+    async function checkForReadyBins(){
+       const list = await getBinsReadyForCollection()
+       for (const bin of list){
+        try {
+            await markForCollection(bin.id)
+       } catch (err) {
+        //    console.log(err);
+       }
+       
+         
+       } 
+    }
+    async function collectReadyBins() {
+        let sql4 = `select * from waste_bin_collection_activity 
+        join waste_bin_collection_status 
+        on waste_bin_collection_status_id=waste_bin_collection_status_id where waste_bin_collection_status.name=?`
+        // 'in-request'
+        const readyAll = await db.all(sql4, 'in-request');
+        console.log(readyAll);
+        return readyAll;
+    }
 
     // function depotData(depotId) {
         // what do we have at the depot?
@@ -49,7 +73,12 @@ module.exports = function binService(db) {
 
     return{
         getBins,
-        // fillBins
+        fillBins,
+        markForCollection,
+        getBin,
+        getBinsReadyForCollection,
+        checkForReadyBins,
+        collectReadyBins
     }
 };
 

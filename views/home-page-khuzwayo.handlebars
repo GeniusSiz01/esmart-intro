@@ -10,23 +10,43 @@
 </div>
 
 <div class="tbc-container row center tbc-box">
-        <div class="details">
-            <h3>Donor: Pretty Lebuwa</h3>
-            <h4>Address: 30 Rivionia Rd</h4>
-            <h4>Suburb: MooiKloof, 2196</h4>
-            <h4>Waste: General Waste</h4>
-        </div>
-        <div class="Kilo inner">
-            <h3>10 Km</h3>
-        </div>
+    {{#each this.readyBins }}
+        <div class="details"></div>
+            <h3>{{name}}</h3>
+            <h3>{{surname}}</h3>
+            <h3>{{residential_address}}</h3>
+           
+         
+        {{/each}}
 </div>
 
 <div class="row">
     <div class="col-12">
+        <a href="#"> Home</a>
+        <a href="/to-be-collected"><i><img src="images/esmartbin.png" width="50" ></i>Notifications</a>
+        <a href="#">Support</a>
+        <a href="#">Profile</a>
     </div>
 </div>
 
-<div class="tbc-container row center tbc-box">
+
+    id: 1,
+    waste_bin_id: 3,
+    waste_collector_id: null,
+    waste_donor_id: 3,
+    depot_id: null,
+    waste_bin_collection_status_id: '1',
+    weight_collected: 19.5,
+    date_time: '1627418795927.0',
+    name: 'in-request',
+    description: 'request sent for collection by waste donor'
+
+{{!-- <div class="row">
+    <div class="col-12">
+    </div>
+</div> --}}
+
+{{!-- <div class="tbc-container row center tbc-box">
         <div class="details">
             <h3>Donor: Pretty Lebuwa</h3>
             <h4>Address: 30 Rivionia Rd</h4>
@@ -53,13 +73,4 @@
         <div class="Kilo inner">
             <h3>25 Km</h3>
         </div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <a href="#"> Home</a>
-        <a href="/to-be-collected"><i><img src="images/esmartbin.png" width="50" ></i>Notifications</a>
-        <a href="#">Support</a>
-        <a href="#">Profile</a>
-    </div>
-</div>
+</div> --}}
