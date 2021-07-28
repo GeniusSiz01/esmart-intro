@@ -55,7 +55,10 @@ module.exports = function binService(db) {
     async function collectReadyBins() {
         let sql4 = `select * from waste_bin_collection_activity 
         join waste_bin_collection_status 
-        on waste_bin_collection_status_id=waste_bin_collection_status_id where waste_bin_collection_status.name=?`
+            on waste_bin_collection_status_id=waste_bin_collection_status_id 
+        join waste_donor 
+            on waste_donor_id=waste_donor.id 
+        where waste_bin_collection_status.name=?`
         // 'in-request'
         const readyAll = await db.all(sql4, 'in-request');
         console.log(readyAll);

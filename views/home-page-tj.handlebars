@@ -7,14 +7,14 @@
     </div>
 
 
-    <div class="row">
         {{#each bins }}
+    <div class="row">
 
         <div class="col-12 center"><a href="/select-waste-bin">
                 <div class="block">
-                   {{name}} <p> {{filled_capacity}}</p><img src="images/esmartbin.png" width="100">
+                   {{name}} <p> {{filled_capacity}}</p><img src="images/esmartbin.png" width="80">
             </a></div>
-        {{/each}}
+            
 
         {{!-- <div class="col-12 center"><a href="/select-waste-bin">
                 <div class="block">
@@ -31,6 +31,7 @@
         </div> --}}
 
     </div>
+        {{/each}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </div>

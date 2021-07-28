@@ -36,7 +36,7 @@ run().then(function () {
   setInterval(function () {
     binService.checkForReadyBins();
     console.log('checkForReadyBins')
-  }, 5000);
+  }, 50000);
 })
 
 const exphbs = require('express-handlebars');
@@ -71,11 +71,11 @@ app.get('/home-page-tj', async function (req, res) {
 });
 
 app.get('/home-page-khuzwayo',async function (req, res) {
-  const binsReady = await binService.collectReadyBins();
-  console.log(binsReady)
+  const readyBins = await binService.collectReadyBins();
+  console.log(readyBins)
 
     res.render('home-page-khuzwayo', {
-      readyBins:binsReady  
+      readyBins
     });
 
 });

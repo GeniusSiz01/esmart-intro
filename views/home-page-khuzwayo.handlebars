@@ -5,41 +5,61 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-12 center"><h2>Ready for Collection</h2></div>
-</div>
-
-<div class="tbc-container row center tbc-box">
-    {{#each this.readyBins }}
-        <div class="details"></div>
-            <h3>{{name}}</h3>
-            <h3>{{surname}}</h3>
-            <h3>{{residential_address}}</h3>
-           
-         
-        {{/each}}
-</div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <div class="row">
-    <div class="col-12">
-        <a href="#"> Home</a>
-        <a href="/to-be-collected"><i><img src="images/esmartbin.png" width="50" ></i>Notifications</a>
-        <a href="#">Support</a>
-        <a href="#">Profile</a>
+    <div class="col-12 center">
+        <h2>Ready for Collection</h2>
     </div>
 </div>
 
+{{#each readyBins }}
+<div class="tbc-container row center tbc-box">
+    <div class="details">
+        <h3>{{name}} {{surname}}</h3>
+        <h5>{{residential_address}}</h5>
+    </div>
 
-    id: 1,
-    waste_bin_id: 3,
-    waste_collector_id: null,
-    waste_donor_id: 3,
-    depot_id: null,
-    waste_bin_collection_status_id: '1',
-    weight_collected: 19.5,
-    date_time: '1627418795927.0',
-    name: 'in-request',
-    description: 'request sent for collection by waste donor'
+</div>
+{{/each}}
+{{!-- 
+<div class="row">
+    <div class="col-12">
+        <a href="#"> Home</a>
+        <a href="/to-be-collected"><i><img src="images/esmartbin.png" width="50"></i>Notifications</a>
+        <a href="#">Support</a>
+        <a href="#">Profile</a>
+    </div>
+</div> --}}
+
+<div>
+
+    <nav class="nav">
+        <a href="#" class="nav__link">
+            <i class="material-icons nav_icon">home</i>
+            <span class="nav__text">Home</span>
+        </a>
+        <a href="#" class="nav__link active">
+            <i class="material-icons nav_icon">notification_important</i>
+            <span class="nav__text">Notifications</span>
+        </a>
+        <a href="#" class="nav__link">
+            <i class="material-icons nav_icon">contact_support</i>
+            <span class="nav__text">Support</span>
+        </a>
+        <a href="#" class="nav__link">
+            <i class="material-icons nav_icon">manage_accounts</i>
+            <span class="nav__text">Profile</span>
+        </a>
+        <a href="#" class="nav__link">
+            <i class="material-icons nav_icon">menu_open</menu></i>
+            <span class="nav__text">More options</span>
+        </a>
+
+
+    </nav>
+</div>
 
 {{!-- <div class="row">
     <div class="col-12">
@@ -47,15 +67,15 @@
 </div> --}}
 
 {{!-- <div class="tbc-container row center tbc-box">
-        <div class="details">
-            <h3>Donor: Pretty Lebuwa</h3>
-            <h4>Address: 30 Rivionia Rd</h4>
-            <h4>Suburb: MooiKloof, 2196</h4>
-            <h4>Waste: General Waste</h4>
-        </div>
-        <div class="Kilo inner">
-            <h3>15 Km</h3>
-        </div>
+    <div class="details">
+        <h3>Donor: Pretty Lebuwa</h3>
+        <h4>Address: 30 Rivionia Rd</h4>
+        <h4>Suburb: MooiKloof, 2196</h4>
+        <h4>Waste: General Waste</h4>
+    </div>
+    <div class="Kilo inner">
+        <h3>15 Km</h3>
+    </div>
 </div>
 
 <div class="row">
@@ -64,13 +84,13 @@
 </div>
 
 <div class="tbc-container row center tbc-box">
-        <div class="details">
-            <h3>Donor: Pretty Lebuwa</h3>
-            <h4>Address: 30 Rivionia Rd</h4>
-            <h4>Suburb: MooiKloof, 2196</h4>
-            <h4>Waste: General Waste</h4>
-        </div>
-        <div class="Kilo inner">
-            <h3>25 Km</h3>
-        </div>
+    <div class="details">
+        <h3>Donor: Pretty Lebuwa</h3>
+        <h4>Address: 30 Rivionia Rd</h4>
+        <h4>Suburb: MooiKloof, 2196</h4>
+        <h4>Waste: General Waste</h4>
+    </div>
+    <div class="Kilo inner">
+        <h3>25 Km</h3>
+    </div>
 </div> --}}
