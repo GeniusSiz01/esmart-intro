@@ -14,15 +14,31 @@
     </div>
 </div>
 
-{{#each readyBins }}
-<div class="tbc-container row center tbc-box">
+<div class="row">
+    <div class="readyBins">
+        {{#each readyBins }}
+<div class="tbc-container center tbc-box">
     <div class="details">
         <h3>{{name}} {{surname}}</h3>
         <h5>{{residential_address}}</h5>
     </div>
 
+<form method="POST" action="/allocate-bin">
+
+<input type="hidden" name="binId" value="{{id}}">
+<input type="hidden" name="collectorId" value="{{../collectorId}}">
+<button type="submit">collect</button>
+
+</form>
+
 </div>
 {{/each}}
+    </div>
+
+</div>
+
+
+
 {{!-- 
 <div class="row">
     <div class="col-12">
@@ -36,7 +52,7 @@
 <div>
 
     <nav class="nav">
-        <a href="#" class="nav__link">
+        <a href="/collector-home-page" class="nav__link">
             <i class="material-icons nav_icon">home</i>
             <span class="nav__text">Home</span>
         </a>
@@ -44,7 +60,7 @@
             <i class="material-icons nav_icon">notification_important</i>
             <span class="nav__text">Notifications</span>
         </a>
-        <a href="#" class="nav__link">
+        <a href="/to-be-collected" class="nav__link">
             <i class="material-icons nav_icon">contact_support</i>
             <span class="nav__text">Support</span>
         </a>

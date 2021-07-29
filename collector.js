@@ -11,21 +11,41 @@ module.exports = function binService(db) {
     }
     async function fillBins() {
         // update  the contents for your bins using update query
-        let sql2 = 'update waste_bin set filled_capacity = filled_capacity + ? where waste_donor_id';
+        let sql2 = 'update waste_bin set filled_capacity = filled_capacity + ?  where waste_donor_id and filled_capacity <= 100';
         const percent = await db.run(sql2,3);
         // console.log(percent);
         return percent;
        
     }
     async function markForCollection(binId) {
-       const bin = await getBin(binId) 
-       console.log(bin) 
+        const bin = await getBin(binId) 
+        // console.log(bin) 
         let sql3= `insert into waste_bin_collection_activity
         (waste_bin_id, waste_donor_id, waste_bin_collection_status_id, weight_collected, date_time) 
         values(?, ?, ?, ?, ?)`; 
         const status = await db.run(sql3, bin.id, bin.waste_donor_id, 1, bin.weight ,new Date())
         // console.log(status);
         return status; 
+    }
+
+    async function binAllocation(statusId, collectorId) {
+        // console.log(bin) 
+        let sql3= `update waste_bin_collection_activity set waste_bin_collection_status_id=? , waste_collector_id=? where id=?`; 
+        const allocate = await db.run(sql3, collectorId,2,statusId )
+        // console.log(status);
+        return ; 
+    }
+
+    async function isBinMarkForCollection(binId) {
+        let sql3= 'select count(*) as count from waste_bin_collection_activity where waste_bin_id=? and waste_bin_collection_status_id=1' 
+        const bin = await db.get(sql3, binId)
+        // console.log(bin)
+        // console.log('isBinMarkForCollection')
+        if(bin.count==0){
+          return false
+        }
+        // console.log(status);
+        return true; 
     }
     async function getBin(binId){
         let sql='select * from waste_bin where id=?'
@@ -44,15 +64,28 @@ module.exports = function binService(db) {
        const list = await getBinsReadyForCollection()
        for (const bin of list){
         try {
-            await markForCollection(bin.id)
+           const alreadyMarkedForCollection = await isBinMarkForCollection(bin.id)
+           if(!alreadyMarkedForCollection){
+               await markForCollection(bin.id)
+           }
        } catch (err) {
-        //    console.log(err);
-       }
-       
-         
+           console.log(err);
+       }  
        } 
     }
     async function collectReadyBins() {
+        let sql4 = `select * from waste_bin_collection_activity 
+        join waste_bin_collection_status 
+            on waste_bin_collection_status_id=waste_bin_collection_status.id 
+        join waste_donor 
+            on waste_donor_id=waste_donor.id 
+        where waste_bin_collection_status.name=?`
+        // 'in-request'
+        const readyAll = await db.all(sql4, 'in-request');
+        // console.log(readyAll);
+        return readyAll;
+    }
+    async function binsForStatus(status) {
         let sql4 = `select * from waste_bin_collection_activity 
         join waste_bin_collection_status 
             on waste_bin_collection_status_id=waste_bin_collection_status_id 
@@ -60,11 +93,16 @@ module.exports = function binService(db) {
             on waste_donor_id=waste_donor.id 
         where waste_bin_collection_status.name=?`
         // 'in-request'
-        const readyAll = await db.all(sql4, 'in-request');
+        const readyAll = await db.all(sql4, status);
         console.log(readyAll);
         return readyAll;
     }
 
+    async function collectors (){
+        let sql5= 'select * from waste_collector '
+        const driverDetails = await db.all(sql5)
+        return driverDetails;
+    }
     // function depotData(depotId) {
         // what do we have at the depot?
     // }
@@ -81,7 +119,11 @@ module.exports = function binService(db) {
         getBin,
         getBinsReadyForCollection,
         checkForReadyBins,
-        collectReadyBins
+        collectReadyBins,
+        isBinMarkForCollection,
+        binsForStatus,
+        binAllocation,
+        collectors
     }
 };
 

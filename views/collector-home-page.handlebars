@@ -1,58 +1,44 @@
 <div class="row">
     <div class="col-6">
         <img src="/images/esmartbin.png" width="50" style="float: left;">
-        <h3>Welcome to eSmart solutions Patrick Khuzwayo</h3>
+        <h3>Welcome to eSmart solutions</h3>
     </div>
 </div>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div class="row">
-    <div class="col-12 center">
-        <h1>To be Collected</h1>
-    </div>
-</div>
-
-<div class="tbc-container row center tbc-box">
-    <div class="details">
-        <h3>Donor: Pretty Lebuwa</h3>
-        <h4>Address: 30 Rivionia Rd</h4>
-        <h4>Suburb: MooiKloof, 2196</h4>
-        <h4>Waste: General Waste</h4>
-    </div>
-    <div class="Kilo inner">
-        <h3>10 Km</h3>
-    </div>
-</div>
 
 <div class="row">
-    <div class="col-12"></div>
-</div>
-
-<div class="tbc-container row center tbc-box">
-    <div class="details">
-        <h3>Donor: Pretty Lebuwa</h3>
-        <h4>Address: 30 Rivionia Rd</h4>
-        <h4>Suburb: MooiKloof, 2196</h4>
-        <h4>Waste: General Waste</h4>
-    </div>
-    <div class="Kilo inner">
-        <h3>10Km</h3>
-    </div>
-</div>
-
-{{!-- <div class="row">
     <div class="col-12">
-        <a href="#"> Home</a>
-        <a href="#"><i><img src="images/esmartbin.png" width="50"></i>Notifications</a>
-        <a href="#">Support</a>
-        <a href="#">Profile</a>
+        <H1>This is the eSmart Collctors Screen</H1>
     </div>
-</div> --}}
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <h3>Please click here if you're a registered eSmart Collector</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <form action="/home-page-khuzwayo">
+            <label for="collectors">eSmart Collector:</label>
+            <select name="collectorId" id="collectorId">
+                {{#each collectors}}
+                <option value="{{id}}">{{name}} {{surname}}</option>
+                {{/each}}
+            </select>
+            <br><br>
+            <input type="submit" value="submit">
+        </form>
+    </div>
+</div>
 
 <div>
 
     <nav class="nav">
-        <a href="/home-page-khuzwayo" class="nav__link">
+        <a href="#" class="nav__link">
             <i class="material-icons nav_icon">home</i>
             <span class="nav__text">Home</span>
         </a>
@@ -60,7 +46,7 @@
             <i class="material-icons nav_icon">notification_important</i>
             <span class="nav__text">Notifications</span>
         </a>
-        <a href="#" class="nav__link">
+        <a href="/to-be-collected" class="nav__link">
             <i class="material-icons nav_icon">contact_support</i>
             <span class="nav__text">Support</span>
         </a>
@@ -69,7 +55,7 @@
             <span class="nav__text">Profile</span>
         </a>
         <a href="#" class="nav__link">
-            <i class="material-icons nav_icon">list</i>
+            <i class="material-icons nav_icon">menu_open</menu></i>
             <span class="nav__text">More options</span>
         </a>
 

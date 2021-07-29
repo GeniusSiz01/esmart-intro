@@ -175,8 +175,9 @@ body {
  .tbc-box{
      border: solid #2a9d8f;
      border-radius:1.5em;
-     width: 400px;
+     /* width: 200px; */
      background-color: #2a9d8f;
+     flex: 1;
  }
 
  .details{
@@ -196,4 +197,8 @@ body {
     padding: 1.5%;
     width: 75px;
  } 
+
+ .readyBins{
+   display: flex;
+ }
 
