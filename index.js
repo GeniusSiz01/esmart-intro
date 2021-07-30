@@ -10,6 +10,8 @@ const BinService = require('./collector');
 
 let db;
 let binService;
+let poleBin = false
+let fillBin = false
 
 async function run() {
   db = await open({
@@ -31,13 +33,19 @@ run().then(function () {
 
   // simulate a bin update every 15 seconds
   setInterval(function () {
-    binService.fillBins();
-    // console.log('fillingBin')
+    if(fillBin){
+      binService.fillBins();
+      
+      console.log('fillingBin')
+    }
   }, 5000);
   
   setInterval(function () {
-    binService.checkForReadyBins();
-    // console.log('checkForReadyBins')
+    if(poleBin){
+      binService.checkForReadyBins();
+      
+       console.log('checkForReadyBins')
+    }
   }, 5000);
 })
 
@@ -67,6 +75,28 @@ app.get('/collector-landing-screen', function (req, res) {
 });
 app.get('/depot-landing-screen', function (req, res) {
   res.render('depot-landing-screen');
+
+});
+app.get('/bin-admin', function (req, res) {
+  res.render('bin-admin');
+
+});
+app.post('/bin-admin/fill-bin', async function (req, res) {
+  fillBin = !fillBin
+  console.log(fillBin)
+  res.redirect('/bin-admin');
+
+});
+app.post('/bin-admin/pole-bin', async function (req, res) {
+  poleBin = !poleBin
+  console.log(poleBin)
+  res.redirect('/bin-admin');
+
+});
+app.post('/bin-admin/reset', async function (req, res) {
+  const binList = await binService.reset();
+  // console.log(poleBin)
+  res.redirect('/bin-admin');
 
 });
 app.get('/home-page-tj', async function (req, res) {

@@ -11,10 +11,21 @@ module.exports = function binService(db) {
     }
     async function fillBins() {
         // update  the contents for your bins using update query
-        let sql2 = 'update waste_bin set filled_capacity = filled_capacity + ?  where waste_donor_id and filled_capacity <= 100';
-        const percent = await db.run(sql2,3);
-        // console.log(percent);
+        let sql2 = 'update waste_bin set filled_capacity = filled_capacity + ?  where waste_donor_id and (filled_capacity + ?)<= 100';
+        const fillFactor = Math.floor(Math.random() * 20)
+        const percent = await db.run(sql2, fillFactor, fillFactor);
+        // console.log(fillFactor);
         return percent;
+       
+    }
+    async function reset() {
+        // update  the contents for your bins using update query
+        let sql2 = 'update waste_bin set filled_capacity = 0 ';
+         await db.run(sql2);
+        let sql3 = 'delete from waste_bin_collection_activity';
+         await db.run(sql3);
+        // console.log(percent);
+        return;
        
     }
     async function markForCollection(binId) {
@@ -123,7 +134,8 @@ module.exports = function binService(db) {
         isBinMarkForCollection,
         binsForStatus,
         binAllocation,
-        collectors
+        collectors,
+        reset
     }
 };
 
