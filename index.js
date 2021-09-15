@@ -4,6 +4,19 @@ const bodyParser = require('body-parser')
 const sqlite3 = require('sqlite3')
 const { open } = require('sqlite')
 const BinService = require('./collector');
+require('dotenv').config();
+const pg = require('pg');
+
+// postgres database setup
+const { Pool } = pg;
+let useSSL = false;
+const local = process.env.LOCAL || false;
+if (process.env.DATABSE_URL && !local) {
+  useSSL = true;
+}
+
+const connectionString = process.env.DATABSE_URL;
+const pool = new Pool({ connectionString, ssl: useSSL });
 
 
 // let binService;
@@ -33,18 +46,18 @@ run().then(function () {
 
   // simulate a bin update every 15 seconds
   setInterval(function () {
-    if(fillBin){
+    if (fillBin) {
       binService.fillBins();
-      
+
       console.log('fillingBin')
     }
   }, 5000);
-  
+
   setInterval(function () {
-    if(poleBin){
+    if (poleBin) {
       binService.checkForReadyBins();
-      
-       console.log('checkForReadyBins')
+
+      console.log('checkForReadyBins')
     }
   }, 5000);
 })
@@ -59,7 +72,10 @@ app.use(express.static('public'));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+
+
+
 
 app.get('/', function (req, res) {
   res.render('home');
@@ -107,25 +123,25 @@ app.get('/home-page-tj', async function (req, res) {
   });
 });
 
-app.get('/collector-home-page', async function(req, res){
-  const collectors= await binService.collectors();
-  res.render('collector-home-page', {collectors});
+app.get('/collector-home-page', async function (req, res) {
+  const collectors = await binService.collectors();
+  res.render('collector-home-page', { collectors });
 });
 
-app.get('/home-page-khuzwayo',async function (req, res) {
+app.get('/home-page-khuzwayo', async function (req, res) {
   const readyBins = await binService.collectReadyBins();
   // console.log(readyBins)
   const collectorId = req.query.collectorId
-    res.render('home-page-khuzwayo', {
+  res.render('home-page-khuzwayo', {
     readyBins, collectorId
-    });
+  });
 
 });
 
-app.post('/allocate-bin',async function(req, res){
-    console.log(req.body)
-    await binService.binAllocation(req.body.binId, req.body.collectorId);
-    res.render('allocate-bin');
+app.post('/allocate-bin', async function (req, res) {
+  console.log(req.body)
+  await binService.binAllocation(req.body.binId, req.body.collectorId);
+  res.render('allocate-bin');
 });
 
 app.get('/select-waste-bin', function (req, res) {
