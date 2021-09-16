@@ -3,7 +3,7 @@
 --     name text
 -- );
 
-insert into waste_type(name) values('General');
-insert into waste_type(name) values('Plastic');
-insert into waste_type(name) values('Metal Tins');
-insert into waste_type(name) values('Glass');
+insert into waste_type(id, name) values(1, 'General');
+insert into waste_type(id, name) values(2, 'Plastic');
+insert into waste_type(id, name) values(3, 'Metal Tins');
+insert into waste_type(id, name) values(4, 'Glass');

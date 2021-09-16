@@ -1,4 +1,4 @@
-import { equal } from 'assert';
+const { equal } = require('assert');
 const CollectorAccount = require('../services/accounts/CreateWasteCollectorAccount');
 const pg = require('pg');
 const Model = require('../services/models/WasteCollector.Model');
