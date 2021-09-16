@@ -1,7 +1,14 @@
 create table waste_collector(
-    id integer primary key,
-    name text,
-    surname text,
-    phone_no text,
-    vehicle_regNo text not null
+    id  integer primary key,
+    first_name text,
+    last_name text,
+    cell_number text,
+    vehicle_regNo text not null,
+    email text,
+    location text,
+    age integer,
+    gender text,
+    id_number integer,
+    user_password text,
+    verification boolean
 );
