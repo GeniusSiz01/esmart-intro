@@ -1,4 +1,4 @@
-import { equal } from 'assert';
+const { equal } = require('assert');
 const CollectorAccount = require('../services/accounts/CreateWasteCollectorAccount');
 const pg = require('pg');
 const Model = require('../services/models/WasteCollector.Model');
@@ -21,6 +21,7 @@ describe("Testing the create account functionality", () => {
     it('Should return that "James" was added as a new waste collector account', async () => {
         let model = Model(pool);
         let collector = CollectorAccount(model);
+
 
         const james = {
             firstName: "James",
