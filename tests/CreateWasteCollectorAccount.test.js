@@ -22,7 +22,6 @@ describe("Testing the create account functionality", () => {
         let model = Model(pool);
         let collector = CollectorAccount(model);
 
-
         const james = {
             firstName: "James",
             lastName: "Hope",
