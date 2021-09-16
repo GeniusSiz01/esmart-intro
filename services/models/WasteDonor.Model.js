@@ -11,8 +11,15 @@ module.exports = (pool) => {
             account.gender,
             account.idNumber,
             account.password,
-            account.verification]
-        let res = await pool.query('INSERT INTO waste_donor (firstname, lastname, cell_number, email, residential_address, age, gender, id_number, user_password, verification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', user);
+            account.verification
+        ]
+        let res = await pool.query('INSERT INTO waste_donor (firstname, lastname, cell_number, email, residential_address, age, gender, id_number, user_password, verification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', user);
+        // if (res.rows) {
+        //     // console.log(res.rows[0].id);
+        //     let res = await pool.query('SELECT id FROM waste_type');
+        //     console.log(res.rows);
+        //     await pool.query('INSERT INTO waste_bin (waste_donor_id, waste_type_id) VALUES ($1, $2)', []);
+        // }
         return res;
     }
 
