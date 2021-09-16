@@ -5,6 +5,8 @@ export default class CellNumberService {
         let number = cellNumber.replace(/\s/g, '');
         if (regex.test(number) === true) {
             console.log(number);
+            return true
         }
+        return false
     }
 }

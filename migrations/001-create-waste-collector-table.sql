@@ -1,5 +1,5 @@
 create table waste_collector(
-    id integer primary key,
+    id  integer primary key,
     first_name text,
     last_name text,
     cell_number text,
@@ -8,5 +8,7 @@ create table waste_collector(
     location text,
     age integer,
     gender text,
-    id_number
+    id_number integer,
+    user_password text,
+    verification boolean
 );

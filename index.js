@@ -1,11 +1,11 @@
-const express = require('express');
+import express, { static } from 'express';
 const app = express();
-const bodyParser = require('body-parser')
-const sqlite3 = require('sqlite3')
-const { open } = require('sqlite')
-const BinService = require('./collector');
+import { urlencoded, json } from 'body-parser';
+import { Database } from 'sqlite3';
+import { open } from 'sqlite';
+import BinService from './collector';
 require('dotenv').config();
-const pg = require('pg');
+import pg from 'pg';
 
 // postgres database setup
 const { Pool } = pg;
@@ -29,7 +29,7 @@ let fillBin = false
 async function run() {
   db = await open({
     filename: 'esmart.db',
-    driver: sqlite3.Database
+    driver: Database
   })
 
   db.on('trace', function (data) {
@@ -62,17 +62,17 @@ run().then(function () {
   }, 5000);
 })
 
-const exphbs = require('express-handlebars');
+import exphbs from 'express-handlebars';
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
-app.use(express.static('public'));
+app.use(static('public'));
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(urlencoded({ extended: false }))
 // parse application/json
-app.use(bodyParser.json());
+app.use(json());
 
 
 
