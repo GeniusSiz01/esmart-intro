@@ -19,7 +19,7 @@ module.exports = (pool) => {
 
     const findAccount = async (firstName) => {
         let res = await pool.query(`SELECT * FROM waste_collector WHERE first_name = $1`, [firstName]);
-        return res.rows[0];
+        return res.rows;
     }
 
     return {

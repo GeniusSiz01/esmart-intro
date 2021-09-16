@@ -37,7 +37,7 @@ describe("Testing the create account functionality", () => {
         }
         await collector.create(james);
         let res = await model.findAccount(james.firstName);
-        equal(res.first_name, "James");
+        equal(res[0].first_name, "James");
     });
 
     after(() => {
