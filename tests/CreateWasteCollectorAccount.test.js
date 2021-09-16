@@ -1,7 +1,7 @@
 import { equal } from 'assert';
-const CreateAccounts = require('../services/accounts/CreateAccounts');
+const CollectorAccount = require('../services/accounts/CreateWasteCollectorAccount');
 const pg = require('pg');
-const Model = require('../services/models/Account');
+const Model = require('../services/models/WasteCollector.Model');
 const { Pool } = pg;
 
 let useSSL = false;
@@ -15,18 +15,12 @@ const pool = new Pool({ connectionString, ssl: useSSL });
 
 describe("Testing the create account functionality", () => {
     beforeEach(async () => {
-
+        await pool.query('DELETE FROM waste_collector');
     });
 
-    // beforeEach(async () => {
-    // });
-
-    // after(() => {
-    // });
-
-    it('Should return that "James" was added as a new account', async () => {
+    it('Should return that "James" was added as a new waste collector account', async () => {
         let model = Model(pool);
-        let collector = CreateAccounts(model);
+        let collector = CollectorAccount(model);
 
         const james = {
             firstName: "James",
@@ -39,12 +33,15 @@ describe("Testing the create account functionality", () => {
             age: 30,
             password: "Fwgr123",
             verification: false,
-            vehicleRegNo : "CA 123 456"
+            vehicleRegNo: "CA 123 456"
         }
-        console.log(await model.createAccount(james));
-        console.log(await model.getAccount('James'));
-        // let res = await Accounts.findOne({ firstName: 'James' });
-        equal(0, 0);
+        await collector.create(james);
+        let res = await model.findAccount(james.firstName);
+        equal(res.first_name, "James");
+    });
+
+    after(() => {
+        pool.end();
     });
 
 });
