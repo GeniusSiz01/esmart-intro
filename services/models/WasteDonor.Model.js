@@ -28,8 +28,20 @@ module.exports = (pool) => {
         return res.rows[0];
     }
 
+    const findAccountById = async (id) => {
+        let res = await pool.query('select * from waste_donor where id = $1', [id]);
+        return res.rows[0];
+    }
+
+    const getAccounts = async () => {
+        let res = await pool.query('select * from waste_donor');
+        return res.rows;
+     }
+
     return {
         createAccount,
-        findAccount
+        findAccount,
+        findAccountById,
+        getAccounts
     }
 }

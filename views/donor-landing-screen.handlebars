@@ -7,14 +7,16 @@
     </div>
 
     <div class="row">
-        <div class="col-12 center"><a href="/home-page-tj">
-            <img src="/images/esmartbin.png" width="200">
-        </a></div>
+
+        <div class="col-12 center"><a href="/account/{{user}}">
+                <img src="/images/esmartbin.png" width="200">
+            </a></div>
     </div>
 
     <div class="row">
         <div class="col-12 center">
             <h3>Waste Donor</h3>
+
         </div>
     </div>
 
@@ -23,5 +25,13 @@
             <h6>powered by eSmart developers cc</h6>
         </div>
     </div>
+    <div class="row">
+        <div class="col-12 center">
+            {{#each accounts}}
+            <a href="/account/{{id}}">
+                <button type="button" class="btn btn-secondary btn-sm">{{firstname}}</button>
+            </a>
+            {{/each}}
+        </div>
+    </div>
 </div>
-  

@@ -9,6 +9,7 @@ const pg = require('pg');
 const UserAccountRoutes = require('./services/esmartRoutes/UserAccounts');
 const AdminRotes = require('./services/esmartRoutes/AdminRoutes/Admin');
 const WasteBinsModel = require('./services/models/WasteBins.Mode');
+const WasteDonorModel = require('./services/models/WasteDonor.Model');
 
 // postgres database setup
 const { Pool } = pg;
@@ -18,56 +19,16 @@ if (process.env.DATABASE_URL && !local) {
   useSSL = true;
 }
 
-const connectionString = process.env.DATABASE_URL || "postgresql://:pg123@localhost:5432/e_smart";
+const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
 const pool = new Pool({
   connectionString,
-  ssl: { rejectUnauthorized: false }
+  ssl: useSSL
 });
 
-
+// { rejectUnauthorized: false }
 
 // let binService;
 
-let db;
-let binService;
-let poleBin = false
-let fillBin = false
-
-async function run() {
-  db = await open({
-    filename: 'esmart.db',
-    driver: Database
-  })
-
-  db.on('trace', function (data) {
-    // console.log(data)
-
-  });
-  db.exec('PRAGMA foreign_keys = ON;');
-  await db.migrate();
-}
-
-run().then(function () {
-
-  binService = BinService(db);
-
-  // simulate a bin update every 15 seconds
-  setInterval(function () {
-    if (fillBin) {
-      binService.fillBins();
-
-      console.log('fillingBin')
-    }
-  }, 5000);
-
-  setInterval(function () {
-    if (poleBin) {
-      binService.checkForReadyBins();
-
-      console.log('checkForReadyBins')
-    }
-  }, 5000);
-})
 
 const exphbs = require('express-handlebars');
 
@@ -88,10 +49,10 @@ app.get('/', function (req, res) {
   res.render('home');
 });
 
-app.get('/donor-landing-screen', function (req, res) {
-  res.render('donor-landing-screen')
+// app.get('/donor-landing-screen', function (req, res) {
+//   res.render('donor-landing-screen')
 
-});
+// });
 app.get('/collector-landing-screen', function (req, res) {
   res.render('collector-landing-screen');
 
@@ -105,29 +66,20 @@ app.get('/bin-admin', function (req, res) {
 
 });
 app.post('/bin-admin/fill-bin', async function (req, res) {
-  fillBin = !fillBin
-  console.log(fillBin)
   res.redirect('/bin-admin');
 
 });
 app.post('/bin-admin/pole-bin', async function (req, res) {
-  poleBin = !poleBin
-  console.log(poleBin)
   res.redirect('/bin-admin');
 
 });
 app.post('/bin-admin/reset', async function (req, res) {
-  const binList = await binService.reset();
-  // console.log(poleBin)
   res.redirect('/bin-admin');
 
 });
 app.get('/home-page-tj', async function (req, res) {
-  const binList = await binService.getBins();
   // console.log(binList);
-  res.render('home-page-tj', {
-    bins: binList
-  });
+  res.render('home-page-tj');
 });
 
 app.get('/collector-home-page', async function (req, res) {
@@ -136,12 +88,12 @@ app.get('/collector-home-page', async function (req, res) {
 });
 
 app.get('/home-page-khuzwayo', async function (req, res) {
-  const readyBins = await binService.collectReadyBins();
-  // console.log(readyBins)
-  const collectorId = req.query.collectorId
-  res.render('home-page-khuzwayo', {
-    readyBins, collectorId
-  });
+  // const readyBins = await binService.collectReadyBins();
+  // // console.log(readyBins)
+  // const collectorId = req.query.collectorId
+  // res.render('home-page-khuzwayo', {
+  //   readyBins, collectorId
+  // });
 
 });
 
@@ -180,14 +132,18 @@ app.get('/home-page-david', async function (req, res) {
 
 });
 
+
+let wasteDonormodel = WasteDonorModel(pool);
 let wasteBinsModel = WasteBinsModel(pool);
-let userRoute = UserAccountRoutes(wasteBinsModel);
+let userRoute = UserAccountRoutes(wasteBinsModel, wasteDonormodel);
 let adminRoute = AdminRotes(wasteBinsModel);
 
 
 
+app.get('/account/:id?', userRoute.getWasteDonorAccount);
 app.get('/home/:user?', userRoute.wasteDonorBins);
 app.get('/show/bins', adminRoute.getBins);
+app.get('/donor-landing-screen', userRoute.displayDonorLandingPage);
 
 const PORT = process.env.PORT || 3007;
 

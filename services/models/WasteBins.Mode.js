@@ -1,7 +1,7 @@
 module.exports = (pool) => {
 
-    const getDonorBins = async (firstName) => {
-        let res = await pool.query('select waste_bin.id, waste_bin.weight, waste_bin.filled_capacity, waste_donor.firstname, waste_type.name from waste_bin inner join waste_donor on waste_donor.id = waste_bin.waste_donor_id inner join waste_type on waste_type.id = waste_bin.waste_type_id where firstname = $1', [firstName]);
+    const getDonorBins = async (id) => {
+        let res = await pool.query('select waste_bin.id, waste_bin.weight, waste_bin.filled_capacity, waste_donor.firstname, waste_type.name from waste_bin inner join waste_donor on waste_donor.id = waste_bin.waste_donor_id inner join waste_type on waste_type.id = waste_bin.waste_type_id where waste_donor_id = $1', [id]);
         return res.rows;
     }
 
@@ -22,7 +22,6 @@ module.exports = (pool) => {
 
     const getAllBinTypes = async () => {
         let res = await pool.query('select * from waste_type');
-        
         return res.rows;
     }
 
