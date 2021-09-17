@@ -12,7 +12,7 @@ if (process.env.DATABASE_URL && !local) {
     useSSL = true;
 }
 
-const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart_test";
+const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
 const pool = new Pool({ connectionString, ssl: useSSL });
 
 describe("Testing the link to add bins functionality", () => {
@@ -42,9 +42,8 @@ describe("Testing the link to add bins functionality", () => {
         await donor.create(sibusiso);
         let donorId = await wasteDonorModel.findAccount(sibusiso.firstName);
         let binType = await wasteBinsMode.getAllBinTypes();
-        await wasteBinsMode.createBins(donorId.id, binType[0].id);
-        // console.log(binType[0].id);  
-        // equal(donorId.firstname, "Sibusiso");
+        let res = await wasteBinsMode.createBins(donorId.id, binType);
+        equal(res.response, "Waste bins are now working");
     });
 
     after(() => {

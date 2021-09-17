@@ -1,11 +1,14 @@
-import express, { static } from 'express';
+const express = require('express');
 const app = express();
-import { urlencoded, json } from 'body-parser';
-import { Database } from 'sqlite3';
-import { open } from 'sqlite';
-import BinService from './collector';
+const { urlencoded, json } = require('body-parser');
+const { Database } = require('sqlite3');
+const { open } = require('sqlite');
+const BinService = require('./collector');
 require('dotenv').config();
-import pg from 'pg';
+const pg = require('pg');
+const UserAccountRoutes = require('./services/esmartRoutes/UserAccounts');
+const AdminRotes = require('./services/esmartRoutes/AdminRoutes/Admin');
+const WasteBinsModel = require('./services/models/WasteBins.Mode');
 
 // postgres database setup
 const { Pool } = pg;
@@ -15,8 +18,9 @@ if (process.env.DATABSE_URL && !local) {
   useSSL = true;
 }
 
-const connectionString = process.env.DATABSE_URL;
+const connectionString = process.env.DATABSE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
 const pool = new Pool({ connectionString, ssl: useSSL });
+
 
 
 // let binService;
@@ -62,12 +66,12 @@ run().then(function () {
   }, 5000);
 })
 
-import exphbs from 'express-handlebars';
+const exphbs = require('express-handlebars');
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
-app.use(static('public'));
+app.use(express.static('public'));
 
 // parse application/x-www-form-urlencoded
 app.use(urlencoded({ extended: false }))
@@ -166,6 +170,14 @@ app.get('/home-page-david', async function (req, res) {
   });
 
 });
+
+let wasteBinsModel = WasteBinsModel(pool);
+let userRoute = UserAccountRoutes(wasteBinsModel);
+let adminRoute = AdminRotes(wasteBinsModel);
+
+app.get('/home/:user?', userRoute.wasteDonorBins);
+app.get('/show/bins', adminRoute.getBins);
+
 const PORT = process.env.PORT || 3007;
 
 app.listen(PORT, function () {
