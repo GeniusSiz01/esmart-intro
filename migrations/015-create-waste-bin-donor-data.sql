@@ -1,2 +1,57 @@
-insert into waste_donor(id, first_name, last_name, cell_number, vehicle_regNo, email, location, age, gender, id_number, user_password, verification) values(1, 'Sibusiso', 'Nkosi', 'Midrand', '0668034948', 'sibusisonkosi0897@gmail.com', 6208245617088, 'Male', 35, 'Fwgr123', false);
-insert into waste_donor(id, first_name, last_name, cell_number, vehicle_regNo, email, location, age, gender, id_number, user_password, verification) values(1, 'Jason', 'Gama', 'Midrand', '0812828250', 'jasongama@gmail.com', 7258245617088, 'Male', 25, 'Fwgr123', false);
+insert into
+    waste_donor(
+        id,
+        firstname,
+        lastname,
+        cell_number,
+        residential_address,
+        email,
+        age,
+        gender,
+        id_number,
+        user_password,
+        verification
+    )
+values
+    (
+        1,
+        'Sibusiso',
+        'Nkosi',
+        '0668034948',
+        'Midrand',
+        'sibusisonkosi0897@gmail.com',
+        35,
+        'Male',
+        6208245617088,
+        'Fwgr123',
+        false
+    );
+
+insert into
+    waste_donor(
+        id,
+        firstname,
+        lastname,
+        cell_number,
+        residential_address,
+        email,
+        age,
+        gender,
+        id_number,
+        user_password,
+        verification
+    )
+values
+    (
+        1,
+        'Jason',
+        'Gama',
+        '0812828250',
+        'Midrand',
+        'jasongama@gmail.com',
+        25,
+        'Male',
+        7258245617088,
+        'Fwgr123',
+        false
+    );
