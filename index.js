@@ -14,7 +14,7 @@ const WasteBinsModel = require('./services/models/WasteBins.Mode');
 const { Pool } = pg;
 let useSSL = false;
 const local = process.env.LOCAL || false;
-if (process.env.DATABSE_URL && !local) {
+if (process.env.DATABASE_URL && !local) {
   useSSL = true;
 }
 
