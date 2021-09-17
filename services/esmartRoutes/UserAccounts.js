@@ -12,7 +12,6 @@ module.exports = (wasteBins) => {
         let newFirstName = user.trim();
         newFirstName = newFirstName.charAt(0).toUpperCase() + (newFirstName.slice(1)).toLowerCase();
         let bins = await wasteBins.getDonorBins(newFirstName);
-        console.log(bins);
         res.json({
             wasteDonor: bins
         });
