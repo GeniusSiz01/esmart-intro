@@ -18,7 +18,7 @@ if (process.env.DATABSE_URL && !local) {
   useSSL = true;
 }
 
-const connectionString = process.env.DATABSE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
+const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
 const pool = new Pool({ connectionString, ssl: useSSL });
 
 
