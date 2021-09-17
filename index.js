@@ -151,12 +151,7 @@ app.post('/allocate-bin', async function (req, res) {
 app.get('/select-waste-bin', function (req, res) {
   res.render('select-waste-bin')
 });
-app.get('/thank-you-screen', function (req, res) {
-  res.json({
-    binTypes: "Thank you screen"
-  })
-  // res.render('thank-you-screen')
-});
+
 app.get('/to-be-collected', function (req, res) {
   res.render('to-be-collected')
 });
@@ -177,6 +172,13 @@ app.get('/home-page-david', async function (req, res) {
 let wasteBinsModel = WasteBinsModel(pool);
 let userRoute = UserAccountRoutes(wasteBinsModel);
 let adminRoute = AdminRotes(wasteBinsModel);
+
+app.get('/thank-you-screen', async function (req, res) {
+  res.json({
+    binTypes: await WasteBinsModel.getAllBinTypes()
+  })
+  // res.render('thank-you-screen')
+});
 
 app.get('/home/:user?', userRoute.wasteDonorBins);
 app.get('/show/bins', adminRoute.getBins);
