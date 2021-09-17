@@ -178,7 +178,7 @@ let adminRoute = AdminRotes(wasteBinsModel);
 
 app.get('/thank-you-screen', async function (req, res) {
   res.json({
-    binTypes: await WasteBinsModel.getAllBinTypes()
+    binTypes: await wasteBinsModel.getAllBinTypes()
   })
   // res.render('thank-you-screen')
 });
