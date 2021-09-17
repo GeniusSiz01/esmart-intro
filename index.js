@@ -19,7 +19,10 @@ if (process.env.DATABASE_URL && !local) {
 }
 
 const connectionString = process.env.DATABASE_URL || "postgresql://:pg123@localhost:5432/e_smart";
-const pool = new Pool({ connectionString });
+const pool = new Pool({
+  connectionString,
+  ssl: { rejectUnauthorized: false }
+});
 
 
 
