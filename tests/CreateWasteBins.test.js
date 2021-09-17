@@ -6,14 +6,8 @@ const WasteDonorModel = require('../services/models/WasteDonor.Model');
 const WasteBinsMode = require('../services/models/WasteBins.Mode');
 const { Pool } = pg;
 
-let useSSL = false;
-const local = process.env.LOCAL || false;
-if (process.env.DATABASE_URL && !local) {
-    useSSL = true;
-}
-
-const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
-const pool = new Pool({ connectionString, ssl: useSSL });
+const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart_test";
+const pool = new Pool({ connectionString });
 
 describe("Testing the link to add bins functionality", () => {
     beforeEach(async () => {

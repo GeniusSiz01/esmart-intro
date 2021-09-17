@@ -4,14 +4,8 @@ const pg = require('pg');
 const Model = require('../services/models/WasteCollector.Model');
 const { Pool } = pg;
 
-let useSSL = false;
-const local = process.env.LOCAL || false;
-if (process.env.DATABASE_URL && !local) {
-    useSSL = true;
-}
-
-const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
-const pool = new Pool({ connectionString, ssl: useSSL });
+const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart_test";
+const pool = new Pool({ connectionString });
 
 describe("Testing the create account functionality", () => {
     beforeEach(async () => {
