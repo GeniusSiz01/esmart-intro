@@ -153,7 +153,7 @@ app.get('/select-waste-bin', function (req, res) {
 });
 app.get('/thank-you-screen', function (req, res) {
   res.json({
-    binTypes: ""
+    binTypes: "Thank you screen"
   })
   // res.render('thank-you-screen')
 });
