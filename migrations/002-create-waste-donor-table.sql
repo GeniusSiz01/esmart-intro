@@ -1,5 +1,5 @@
 create table waste_donor(
-    id integer primary key,
+    id serial primary key,
     firstname text,
     lastname text,
     cell_number text,
@@ -7,7 +7,7 @@ create table waste_donor(
     email text,
     age integer,
     gender text,
-    id_number integer,
+    id_number BIGINT,
     user_password text,
     verification boolean
 );

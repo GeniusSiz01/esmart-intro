@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha tests/*.js",
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "transpile": "babel ./tests/*.js --out-dir dist-tests",
     "clean": "rimraf dist-server",
     "build": "npm-run-all clean transpile"
@@ -18,6 +18,7 @@
     "@babel/preset-env": "^7.15.6",
     "@types/mongoose": "^5.11.97",
     "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
     "email-verifier": "^0.4.1",
     "esm": "^3.2.25",
     "express": "^4.17.1",
