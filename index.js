@@ -145,6 +145,14 @@ app.get('/home-page-khuzwayo', async function (req, res) {
 
 });
 
+
+app.get('/thank-you-screen', async function (req, res) {
+  res.json({
+    binTypes: await wasteBinsModel.getAllBinTypes()
+  })
+  // res.render('thank-you-screen')
+});
+
 app.post('/allocate-bin', async function (req, res) {
   console.log(req.body)
   await binService.binAllocation(req.body.binId, req.body.collectorId);
@@ -176,12 +184,7 @@ let wasteBinsModel = WasteBinsModel(pool);
 let userRoute = UserAccountRoutes(wasteBinsModel);
 let adminRoute = AdminRotes(wasteBinsModel);
 
-app.get('/thank-you-screen', async function (req, res) {
-  res.json({
-    binTypes: await wasteBinsModel.getAllBinTypes()
-  })
-  // res.render('thank-you-screen')
-});
+
 
 app.get('/home/:user?', userRoute.wasteDonorBins);
 app.get('/show/bins', adminRoute.getBins);
