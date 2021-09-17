@@ -26,7 +26,8 @@ module.exports = (wasteBins, wasteDonor) => {
         if (account) {
             res.render('waste-donor-home-page', {
                 donoName: account.firstname + " " + account.lastname,
-                bins: bins
+                bins: bins,
+                donorId: account.id
             });
         } else {
             res.json({
@@ -44,10 +45,17 @@ module.exports = (wasteBins, wasteDonor) => {
         });
     }
 
+    const simulateBins = async (req, res) => {
+        let { id } = req.params;
+        let results = await wasteBins.updateBinsCapacity(id);
+        res.redirect(`/account/${id}`);
+    }
+
     return {
         index,
         wasteDonorBins,
         getWasteDonorAccount,
-        displayDonorLandingPage
+        displayDonorLandingPage,
+        simulateBins
     }
 }

@@ -144,6 +144,7 @@ app.get('/account/:id?', userRoute.getWasteDonorAccount);
 app.get('/home/:user?', userRoute.wasteDonorBins);
 app.get('/show/bins', adminRoute.getBins);
 app.get('/donor-landing-screen', userRoute.displayDonorLandingPage);
+app.post('/simulate/bins/:id?', userRoute.simulateBins);
 
 const PORT = process.env.PORT || 3007;
 

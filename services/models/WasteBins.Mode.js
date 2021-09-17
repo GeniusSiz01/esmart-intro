@@ -25,10 +25,21 @@ module.exports = (pool) => {
         return res.rows;
     }
 
+    const updateBinsCapacity = async (id) => {
+        let res = await pool.query('select * from waste_bin where waste_donor_id = $1', [id]);
+        if (res.rows[0].length !== 0) {
+            for (let x = 0; x < res.rows.length; x++) {
+                const fillFactor = Math.floor(Math.random() * 20);
+                await pool.query('update waste_bin set filled_capacity = filled_capacity + $1  where waste_donor_id = $2 and (filled_capacity + $3)<= 100', [fillFactor, id, fillFactor]);
+            }
+        }
+    }
+
 
     return {
         getDonorBins,
         createBins,
-        getAllBinTypes
+        getAllBinTypes,
+        updateBinsCapacity
     }
 }
