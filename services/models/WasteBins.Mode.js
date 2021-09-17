@@ -23,6 +23,7 @@ module.exports = (pool) => {
 
     const getAllBinTypes = async () => {
         let res = await pool.query('select * from waste_type');
+        
         return res.rows;
     }
 

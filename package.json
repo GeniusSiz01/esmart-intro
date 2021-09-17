@@ -2,36 +2,27 @@
   "name": "esmart-intro",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "test": "mocha tests/*.js",
-    "start": "nodemon index.js",
-    "transpile": "babel ./tests/*.js --out-dir dist-tests",
-    "clean": "rimraf dist-server",
-    "build": "npm-run-all clean transpile"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "type": "commonjs",
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/cli": "^7.15.4",
-    "@babel/core": "^7.15.5",
-    "@babel/preset-env": "^7.15.6",
-    "@types/mongoose": "^5.11.97",
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
-    "email-verifier": "^0.4.1",
-    "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.2",
-    "lion-lib": "^1.1.0",
-    "mongoose": "^6.0.5",
     "nodemon": "^2.0.12",
     "pg": "^8.7.1",
     "rimraf": "^3.0.2",
     "sqlite": "^4.0.23",
-    "sqlite3": "^5.0.2",
-    "ts-mocha": "^8.0.0",
-    "typescript": "^4.4.3"
+    "sqlite3": "^5.0.2"
   },
   "babel": {
     "presets": [
@@ -45,7 +36,8 @@
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.9.1",
     "@types/pg": "^8.6.1",
-    "mocha": "^9.1.1"
+    "mocha": "^9.1.1",
+    "npm-run-all": "^4.1.5"
   },
   "repository": {
     "type": "git",
