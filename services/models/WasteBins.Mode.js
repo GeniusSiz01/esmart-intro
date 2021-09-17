@@ -8,7 +8,6 @@ module.exports = (pool) => {
     const createBins = async (donorId, binTypeId) => {
         const binTypes = Array.isArray(binTypeId) ? binTypeId : [binTypeId];
         let isAdded = false;
-        console.log(binTypes);
         for (let x = 0; x < binTypes.length; x++) {
             const binId = binTypes[x];
             let res = await pool.query('INSERT INTO waste_bin (weight, filled_capacity, waste_donor_id, waste_type_id) VALUES ($1, $2, $3, $4) RETURNING *', [0, 0, donorId, binId.id]);
