@@ -13,6 +13,7 @@ before_script:
   - psql -U postgres -d e_smart_test -a -f migrations/001-create-waste-collector-table.sql
   - psql -U postgres -d e_smart_test -a -f migrations/002-create-waste-donor-table.sql
   - psql -U postgres -d e_smart_test -a -f migrations/004-create-waste-bin-table.sql
+  - psql -U postgres -d e_smart_test -a -f migrations/003-create-waste-type-table.sql
   - psql -U postgres -d e_smart_test -a -f migrations/010-create-waste-type-data-table.sql
 
 addons:
