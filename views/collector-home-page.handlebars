@@ -22,11 +22,11 @@
 
 <div class="row">
     <div class="col-12">
-        <form action="/home-page-khuzwayo">
+        <form action="/bins/full" method="GET">
             <label for="collectors">eSmart Collector:</label>
             <select name="collectorId" id="collectorId">
                 {{#each collectors}}
-                <option value="{{id}}">{{name}} {{surname}}</option>
+                <option value="{{id}}">{{first_name}} {{last_name}}</option>
                 {{/each}}
             </select>
             <br><br>

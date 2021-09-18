@@ -8,9 +8,9 @@
 
     <div class="row">
 
-        <div class="col-12 center"><a href="/account/{{user}}">
+        <div class="col-12 center"><a href="/account/donor/{{user}}">
                 <img src="/images/esmartbin.png" width="200">
-            </a></div>
+            </a></div>      
     </div>
 
     <div class="row">
@@ -25,13 +25,15 @@
             <h6>powered by eSmart developers cc</h6>
         </div>
     </div>
+
     <div class="row">
         <div class="col-12 center">
             {{#each accounts}}
-            <a href="/account/{{id}}">
+            <a href="/account/donor/{{id}}">
                 <button type="button" class="btn btn-secondary btn-sm">{{firstname}}</button>
             </a>
             {{/each}}
         </div>
     </div>
+    
 </div>

@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-6">
         <img src="/images/esmartbin.png" width="50" style="float: left;">
-        <h3>Welcome to eSmart solutions Patrick Khuzwayo</h3>
+        <h3>Welcome to eSmart solutions {{collector}}</h3>
     </div>
 </div>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <div class="row">
     <div class="col-12 center">
@@ -14,32 +14,40 @@
     </div>
 </div>
 
+
+<div class="row">
+    <div class="col-12 center">
+        <h5>{{status}}</h5>
+    </div>
+</div>
+
 <div class="row">
     <div class="readyBins">
-        {{#each readyBins }}
-<div class="tbc-container center tbc-box">
-    <div class="details">
-        <h3>{{name}} {{surname}}</h3>
-        <h5>{{residential_address}}</h5>
+        {{#each readyBins}}
+        <div class="tbc-container center tbc-box">
+            <div class="details">
+                <h3>{{firstName}} {{lastName}}</h3>
+                <p>Bin Count: {{binCount}}</p>
+                <h5>{{address}}</h5>
+            </div>
+
+            <form method="POST" action="/allocate-bin">
+
+                <input type="hidden" name="binId" value="{{id}}">
+                <input type="hidden" name="collectorId" value="{{../collectorId}}">
+                <button type="submit">collect</button>
+
+            </form>
+
+        </div>
+        {{/each}}
     </div>
 
-<form method="POST" action="/allocate-bin">
-
-<input type="hidden" name="binId" value="{{id}}">
-<input type="hidden" name="collectorId" value="{{../collectorId}}">
-<button type="submit">collect</button>
-
-</form>
-
-</div>
-{{/each}}
-    </div>
-
 </div>
 
 
 
-{{!-- 
+{{!--
 <div class="row">
     <div class="col-12">
         <a href="#"> Home</a>

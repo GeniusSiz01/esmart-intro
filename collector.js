@@ -13,7 +13,7 @@ module.exports = function binService(db) {
         // update  the contents for your bins using update query
         let sql2 = 'update waste_bin set filled_capacity = filled_capacity + ?  where waste_donor_id and (filled_capacity + ?)<= 100';
         const fillFactor = Math.floor(Math.random() * 20)
-        const percent = await db.run(sql2, fillFactor, fillFactor);
+        const percent = await db.run(sql2, fillFactor, fillFactor); 
         // console.log(fillFactor);
         return percent;
        

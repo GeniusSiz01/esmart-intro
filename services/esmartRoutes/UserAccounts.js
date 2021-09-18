@@ -29,10 +29,6 @@ module.exports = (wasteBins, wasteDonor) => {
                 bins: bins,
                 donorId: account.id
             });
-        } else {
-            res.json({
-                message: 'No account found'
-            })
         }
     }
 
@@ -48,7 +44,13 @@ module.exports = (wasteBins, wasteDonor) => {
     const simulateBins = async (req, res) => {
         let { id } = req.params;
         let results = await wasteBins.updateBinsCapacity(id);
-        res.redirect(`/account/${id}`);
+        res.redirect(`/account/donor/${id}`);
+    }
+
+    const resetBins = async (req, res) => {
+        let { id } = req.params;
+        await wasteBins.resetBinsCapacity(id);
+        res.redirect(`/account/donor/${id}`);
     }
 
     return {
@@ -56,6 +58,7 @@ module.exports = (wasteBins, wasteDonor) => {
         wasteDonorBins,
         getWasteDonorAccount,
         displayDonorLandingPage,
-        simulateBins
+        simulateBins,
+        resetBins
     }
 }

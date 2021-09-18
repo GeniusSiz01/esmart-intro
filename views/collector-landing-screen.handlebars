@@ -7,7 +7,7 @@
     </div>
 
     <div class="row">
-        <div class="col-12 center"> <a href="/collector-home-page">
+        <div class="col-12 center"> <a href="/account/collector/{{id}}">
         <img src="images/esmartbin.png" width="200">
         </a> 
         </div>
@@ -18,6 +18,16 @@
             <h3>Waste Collector</h3>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-12 center">
+            {{#each accounts}}
+            <a href="/account/collector/{{id}}">
+                <button type="button" class="btn btn-secondary btn-sm">{{first_name}}</button>
+            </a>
+            {{/each}}
+        </div>
+    </div>  
 
     <div class="row">
         <div class="col-12 center">
