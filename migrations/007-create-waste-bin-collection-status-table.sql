@@ -1,5 +1,5 @@
 create table waste_bin_collection_status(
-    id integer primary key,
+    id serial primary key,
     name text,
     description text
 );

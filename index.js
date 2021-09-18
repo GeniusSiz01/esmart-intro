@@ -10,6 +10,8 @@ const UserAccountRoutes = require('./services/esmartRoutes/UserAccounts');
 const AdminRotes = require('./services/esmartRoutes/AdminRoutes/Admin');
 const WasteBinsModel = require('./services/models/WasteBins.Mode');
 const WasteDonorModel = require('./services/models/WasteDonor.Model');
+const WasteCollector = require('./services/models/WasteCollector.Model');
+const CollectorAcountRoutes = require('./services/esmartRoutes/collectorAccount');
 
 // postgres database setup
 const { Pool } = pg;
@@ -53,10 +55,10 @@ app.get('/', function (req, res) {
 //   res.render('donor-landing-screen')
 
 // });
-app.get('/collector-landing-screen', function (req, res) {
-  res.render('collector-landing-screen');
+// app.get('/collector-landing-screen', function (req, res) {
+//   res.render('collector-landing-screen');
 
-});
+// });
 app.get('/depot-landing-screen', function (req, res) {
   res.render('depot-landing-screen');
 
@@ -132,19 +134,25 @@ app.get('/home-page-david', async function (req, res) {
 
 });
 
-
+let wasteCollector = WasteCollector(pool)
 let wasteDonormodel = WasteDonorModel(pool);
 let wasteBinsModel = WasteBinsModel(pool);
 let userRoute = UserAccountRoutes(wasteBinsModel, wasteDonormodel);
 let adminRoute = AdminRotes(wasteBinsModel);
+let collectorRoutes = CollectorAcountRoutes(wasteCollector);
 
 
-
-app.get('/account/:id?', userRoute.getWasteDonorAccount);
+app.get('/account/donor/:id?', userRoute.getWasteDonorAccount);
 app.get('/home/:user?', userRoute.wasteDonorBins);
 app.get('/show/bins', adminRoute.getBins);
 app.get('/donor-landing-screen', userRoute.displayDonorLandingPage);
+app.get('/collector-landing-screen', collectorRoutes.displayCollectorLandingPage);
+app.get('/account/collector/:id?', collectorRoutes.getWasteCollectorAccount);
 app.post('/simulate/bins/:id?', userRoute.simulateBins);
+app.post('/reset/bins/:id?', userRoute.resetBins);
+app.get('/bins/full', collectorRoutes.readyToCollectBins);
+// app.get('/collector/:id?/bins', collectorRoutes.readyToCollectBins);
+// app.post('/account/collector/:id');
 
 const PORT = process.env.PORT || 3007;
 

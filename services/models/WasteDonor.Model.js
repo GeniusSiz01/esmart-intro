@@ -35,6 +35,7 @@ module.exports = (pool) => {
 
     const getAccounts = async () => {
         let res = await pool.query('select * from waste_donor');
+        console.log(res.rows);
         return res.rows;
      }
 
