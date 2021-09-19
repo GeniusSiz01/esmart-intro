@@ -27,7 +27,7 @@ if (process.env.DATABASE_URL && !local) {
 const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
 const pool = new Pool({
   connectionString,
-  ssl: useSSL
+  ssl: { rejectUnauthorized: false }
 });
 
 app.use(
@@ -158,7 +158,7 @@ let donorAccount = CreateWasteDonorAccount(wasteDonormodel);
 let collectorAccount = CreateWasteCollectorAccount(wasteCollector);
 let userRoute = UserAccountRoutes(wasteBinsModel, wasteDonormodel, donorAccount);
 let adminRoute = AdminRotes(wasteBinsModel);
-let collectorRoutes = CollectorAcountRoutes(wasteCollector, collectorAccount,wasteDonormodel);
+let collectorRoutes = CollectorAcountRoutes(wasteCollector, collectorAccount, wasteDonormodel);
 
 
 app.get('/account/donor/:id?', userRoute.getWasteDonorAccount);
