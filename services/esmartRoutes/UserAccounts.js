@@ -109,7 +109,7 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
         const { email, password } = req.body;
         let account = await wasteDonor.findAccountByEmail(email);
         let hashPassword = account.user_password;
-        console.log(hashPassword);
+        console.log(hashPassword + ' user password');
         bcrypt.compare(password, hashPassword, async (err, userPassword) => {
             if (err) console.error(err);
             console.log(userPassword);
