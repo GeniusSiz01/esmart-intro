@@ -53,7 +53,6 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor) => {
                 newArray.push(getAccounts);
             }
 
-            console.log(newArray);
             res.render('ready-to-collect-bins', {
                 collector: `${collector.first_name} ${collector.last_name}`,
                 readyBins: newArray
@@ -102,16 +101,23 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor) => {
 
     const handleSigninRequest = async (req, res) => {
         const { email, password } = req.body;
-        let account = await wasteCollector.findAccountByEmail(email);
-        let hashPassword = account.user_password;
-        console.log(hashPassword);
-        bcrypt.compare(password, hashPassword, async (err, userPassword) => {
-            if (err) console.error(err);
-            console.log(userPassword);
-            if (userPassword) {
-                res.redirect(`/account/collector/${account.id}`);
-            }
-        });
+        let collector = await wasteCollector.findAccountByEmail(email);
+        if (collector.response === 'Account not found') {
+            req.flash('info', collector.response);
+            res.redirect('/waste/collector/signin');
+        } else {
+            let hashPassword = collector.account.user_password;
+            bcrypt.compare(password, hashPassword, async (err, userPassword) => {
+                if (err) console.error(err);
+                if (userPassword) {
+                    res.redirect(`/account/collector/${collector.account.id}`);
+                } else {
+                    req.flash('info', 'You have entered an invalid email or password');
+                    res.redirect('/waste/collector/signin');
+                }
+            });
+        }
+
     }
 
     return {
