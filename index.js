@@ -22,7 +22,7 @@ const { Pool } = pg;
 const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
 const pool = new Pool({
   connectionString,
-  ssl: { rejectUnauthorized: true }
+  ssl: { rejectUnauthorized: false }
 });
 
 
