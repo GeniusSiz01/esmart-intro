@@ -108,6 +108,7 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
     const handleSigninRequest = async (req, res) => {
         const { email, password } = req.body;
         let account = await wasteDonor.findAccountByEmail(email);
+        console.log(account);
         let hashPassword = account.user_password;
         console.log(hashPassword + ' user password');
         bcrypt.compare(password, hashPassword, async (err, userPassword) => {
