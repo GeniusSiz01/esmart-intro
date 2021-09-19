@@ -101,7 +101,6 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
                 }
             });
         } else {
-            req.flash('error', 'Your passwords do not match');
             res.redirect('/waste/donor/register');
         }
     }

@@ -18,11 +18,6 @@ const CreateWasteCollectorAccount = require('./services/accounts/CreateWasteColl
 
 // postgres database setup
 const { Pool } = pg;
-let useSSL = false;
-const local = process.env.LOCAL || false;
-if (process.env.DATABASE_URL && !local) {
-  useSSL = true;
-}
 
 const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
 const pool = new Pool({
@@ -30,19 +25,7 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-app.use(
-  session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-      // secure: true, // becareful set this option, check here: https://www.npmjs.com/package/express-session#cookiesecure. In local, if you set this to true, you won't receive flash as you are using `http` in local, but http is not secure
-    },
-  })
-);
 
-app.use(flash({ sessionKeyName: 'flashMessage' }));
 
 // { rejectUnauthorized: false }
 
