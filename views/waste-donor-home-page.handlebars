@@ -6,7 +6,11 @@
         </div>
     </div>
 
-
+    <div class="row">
+        <div class="col-12">
+            <h5 class="center"> {{status}}</h5>
+        </div>
+    </div>
 
     {{#each bins }}
     <div class="block canter">
@@ -15,6 +19,27 @@
         <img src="/images/esmartbin.png" width="80">
     </div>
     {{/each}}
+
+    <div class="row">
+        <form action="/add/bins" method="POST">
+            <div class="col-12 center">
+                {{#each binTypes}}
+                <label for="checkid" style="word-wrap:break-word">
+                    <input id="checkid" name="bins" type="checkbox" value="{{id}}" />{{name}}
+                </label>
+                {{/each}}
+            </div>
+            <input type="text" name="donor" value="{{donorId}}" hidden>
+            <div class="center">
+                <button type="submit">Add bins</button>
+            </div>
+        </form>
+
+    </div>
+
+
+
+
 
 
     <div class="row">

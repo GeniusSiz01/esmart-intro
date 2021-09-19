@@ -1,49 +1,77 @@
-<div class="row">
-    <div class="col-6">
-        <img src="/images/esmartbin.png" width="50" style="float: left;">
-        <h3>Welcome to eSmart solutions {{collector}}</h3>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" rel="stylesheet" />
+    <title>Document</title>
+
+    <style>
+        body {
+            background-color: #52B788;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="row">
+        <div class="col-6">
+            <img src="/images/esmartbin.png" width="50" style="float: left;">
+            <h3>Welcome to eSmart solutions {{collector}}</h3>
+        </div>
     </div>
-</div>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<div class="row">
-    <div class="col-12 center">
-        <h2>Ready for Collection</h2>
+    <div class="row">
+        <div class="col-12 center">
+            <h2>Ready for Collection</h2>
+        </div>
     </div>
-</div>
 
 
-<div class="row">
-    <div class="col-12 center">
-        <h5>{{status}}</h5>
+    <div class="row">
+        <div class="col-12 center">
+            <h5>{{status}}</h5>
+        </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="readyBins">
+    <div class="ui stackable four column grid center">
+
         {{#each readyBins}}
-        <div class="tbc-container center tbc-box">
-            <div class="details">
-                <h3>{{firstName}} {{lastName}}</h3>
-                <p>Bin Count: {{binCount}}</p>
-                <h5>{{address}}</h5>
+        <div class="column">
+            <div class="tbc-container center tbc-box">
+                <div class="details">
+                    <h3>{{firstname}} {{lastname}}</h3>
+                    <p>Bin Count: {{binCount}}</p>
+                    <h5>{{address}}</h5>
+                </div>
+
+                <form method="POST" action="/collect/bin">
+
+                    <input type="hidden" name="binId" value="{{id}}">
+                    <input type="hidden" name="collectorId" value="{{../collectorId}}">
+                    <button type="submit">collect</button>
+
+                </form>
+
             </div>
-
-            <form method="POST" action="/allocate-bin">
-
-                <input type="hidden" name="binId" value="{{id}}">
-                <input type="hidden" name="collectorId" value="{{../collectorId}}">
-                <button type="submit">collect</button>
-
-            </form>
-
         </div>
         {{/each}}
+        {{!-- <div class="column">hell</div> --}}
+        {{!-- <div class="column">ehh</div> --}}
+        {{!-- <div class="column">eeee</div> --}}
     </div>
+</body>
 
-</div>
+</html>
+
 
 
 
@@ -56,7 +84,7 @@
         <a href="#">Profile</a>
     </div>
 </div> --}}
-
+{{!--
 <div>
 
     <nav class="nav">
@@ -83,7 +111,7 @@
 
 
     </nav>
-</div>
+</div> --}}
 
 {{!-- <div class="row">
     <div class="col-12">

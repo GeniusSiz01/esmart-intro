@@ -1,9 +1,9 @@
-<div class="row">
-    <div class="col-6">
-        <img src="/images/esmartbin.png" width="50" style="float: left;">
-        <h3>Welcome to eSmart solutions</h3>
+    <div class="row">
+        <div class="col-12">
+            <img src="/images/esmartbin.png" width="50" style="float: left;">
+            <h5>Welcome to eSmart solutions {{collectorName}}</h5>
+        </div>
     </div>
-</div>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -14,15 +14,15 @@
     </div>
 </div>
 
-<div class="row">
+{{!-- <div class="row">
     <div class="col-12">
         <h3>Please click here if you're a registered eSmart Collector</h3>
     </div>
-</div>
+</div> --}}
 
 <div class="row">
     <div class="col-12">
-        <form action="/bins/full" method="GET">
+        {{!-- <form action="/bins/full" method="GET">
             <label for="collectors">eSmart Collector:</label>
             <select name="collectorId" id="collectorId">
                 {{#each collectors}}
@@ -31,8 +31,18 @@
             </select>
             <br><br>
             <input type="submit" value="submit">
-        </form>
+        </form> --}}
     </div>
+</div>
+
+<div class="row center">
+    <div class="col-4"><a href="/bins/full/{{id}}"><button class="btn1"> Collect bins
+            </button></a></div>
+
+    <div class="col-4"><a href="/depot-landing-screen"><button class="btn1">
+                Collected bins
+            </button></a></div>
+
 </div>
 
 <div>

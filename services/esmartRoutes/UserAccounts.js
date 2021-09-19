@@ -1,4 +1,6 @@
-module.exports = (wasteBins, wasteDonor) => {
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+module.exports = (wasteBins, wasteDonor, donorAccount) => {
 
     const index = async (req, res) => {
 
@@ -20,15 +22,27 @@ module.exports = (wasteBins, wasteDonor) => {
 
     const getWasteDonorAccount = async (req, res) => {
         let { id } = req.params;
+        console.log(id);
         // let account = await wasteDonor.findAccount(newFirstName);
         let account = await wasteDonor.findAccountById(id);
         let bins = await wasteBins.getDonorBins(id);
+        let binTypes = await wasteBins.getAllBinTypes();
         if (account) {
-            res.render('waste-donor-home-page', {
-                donoName: account.firstname + " " + account.lastname,
-                bins: bins,
-                donorId: account.id
-            });
+            if (bins.length === 0) {
+                res.render('waste-donor-home-page', {
+                    donoName: account.firstname + " " + account.lastname,
+                    donorId: account.id,
+                    status: 'No bins available',
+                    binTypes: binTypes
+                });
+            } else {
+                res.render('waste-donor-home-page', {
+                    donoName: account.firstname + " " + account.lastname,
+                    bins: bins,
+                    donorId: account.id,
+                });
+            }
+
         }
     }
 
@@ -53,12 +67,78 @@ module.exports = (wasteBins, wasteDonor) => {
         res.redirect(`/account/donor/${id}`);
     }
 
+    const register = (req, res) => {
+        res.render('waste-donor-register-page');
+    }
+
+    const signin = (req, res) => {
+        res.render('waste-donor-signin-page');
+    }
+
+    const handleCreateAccount = async (req, res) => {
+        const { Firstname, Lastname, Phonenumber, email, Idnuber, password, gender } = req.body;
+        if (password[0] === password[0]) {
+            console.log(password);
+            bcrypt.hash(password, 10, async (err, hashedPassword) => {
+                if (err) console.error(err);
+                const account = {
+                    firstName: Firstname,
+                    lastName: Lastname,
+                    cellNumber: Phonenumber,
+                    email: email,
+                    residentialAddress: '',
+                    idNumber: Idnuber,
+                    gender: gender,
+                    age: 0,
+                    password: hashedPassword,
+                    verification: false,
+                }
+                let results = await donorAccount.create(account);
+                if (results.response === 'Account already exist') {
+                    res.redirect('/waste/donor/signin');
+                } else {
+                    res.redirect('/waste/donor/signin');
+                }
+            });
+        } else {
+            req.flash('error', 'Your passwords do not match');
+            res.redirect('/waste/donor/register');
+        }
+    }
+
+    const handleSigninRequest = async (req, res) => {
+        const { email, password } = req.body;
+        let account = await wasteDonor.findAccountByEmail(email);
+        let hashPassword = account.user_password;
+        console.log(hashPassword);
+        bcrypt.compare(password, hashPassword, async (err, userPassword) => {
+            if (err) console.error(err);
+            console.log(userPassword);
+            if (userPassword) {
+                res.redirect(`/account/donor/${account.id}`);
+            }
+        });
+    }
+
+    const handleAddBins = async (req, res) => {
+        // console.log(req.body);
+        const { bins, donor } = req.body;
+        let makeBins = await wasteBins.createBins(donor, bins);
+        // console.log(makeBins);
+        res.redirect(`/account/donor/${donor}`);
+    }
+
     return {
         index,
         wasteDonorBins,
         getWasteDonorAccount,
         displayDonorLandingPage,
         simulateBins,
-        resetBins
+        resetBins,
+        register,
+        signin,
+        handleCreateAccount,
+        handleSigninRequest,
+        handleAddBins
     }
 }
