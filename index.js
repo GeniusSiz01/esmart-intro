@@ -1,17 +1,20 @@
 const express = require('express');
 const app = express();
 const { urlencoded, json } = require('body-parser');
-const { Database } = require('sqlite3');
-const { open } = require('sqlite');
 const BinService = require('./collector');
 require('dotenv').config();
 const pg = require('pg');
+const session = require('express-session');
+const { flash } = require('express-flash-message');
+const exphbs = require('express-handlebars');
 const UserAccountRoutes = require('./services/esmartRoutes/UserAccounts');
 const AdminRotes = require('./services/esmartRoutes/AdminRoutes/Admin');
 const WasteBinsModel = require('./services/models/WasteBins.Mode');
 const WasteDonorModel = require('./services/models/WasteDonor.Model');
 const WasteCollector = require('./services/models/WasteCollector.Model');
 const CollectorAcountRoutes = require('./services/esmartRoutes/collectorAccount');
+const CreateWasteDonorAccount = require('./services/accounts/CreateWasteDonorAccount');
+const CreateWasteCollectorAccount = require('./services/accounts/CreateWasteCollectorAccount');
 
 // postgres database setup
 const { Pool } = pg;
@@ -27,12 +30,26 @@ const pool = new Pool({
   ssl: useSSL
 });
 
+app.use(
+  session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      // secure: true, // becareful set this option, check here: https://www.npmjs.com/package/express-session#cookiesecure. In local, if you set this to true, you won't receive flash as you are using `http` in local, but http is not secure
+    },
+  })
+);
+
+app.use(flash({ sessionKeyName: 'flashMessage' }));
+
 // { rejectUnauthorized: false }
 
 // let binService;
 
 
-const exphbs = require('express-handlebars');
+
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
@@ -137,9 +154,11 @@ app.get('/home-page-david', async function (req, res) {
 let wasteCollector = WasteCollector(pool)
 let wasteDonormodel = WasteDonorModel(pool);
 let wasteBinsModel = WasteBinsModel(pool);
-let userRoute = UserAccountRoutes(wasteBinsModel, wasteDonormodel);
+let donorAccount = CreateWasteDonorAccount(wasteDonormodel);
+let collectorAccount = CreateWasteCollectorAccount(wasteCollector);
+let userRoute = UserAccountRoutes(wasteBinsModel, wasteDonormodel, donorAccount);
 let adminRoute = AdminRotes(wasteBinsModel);
-let collectorRoutes = CollectorAcountRoutes(wasteCollector);
+let collectorRoutes = CollectorAcountRoutes(wasteCollector, collectorAccount,wasteDonormodel);
 
 
 app.get('/account/donor/:id?', userRoute.getWasteDonorAccount);
@@ -150,7 +169,17 @@ app.get('/collector-landing-screen', collectorRoutes.displayCollectorLandingPage
 app.get('/account/collector/:id?', collectorRoutes.getWasteCollectorAccount);
 app.post('/simulate/bins/:id?', userRoute.simulateBins);
 app.post('/reset/bins/:id?', userRoute.resetBins);
-app.get('/bins/full', collectorRoutes.readyToCollectBins);
+app.get('/bins/full/:id?', collectorRoutes.readyToCollectBins);
+app.get('/waste/donor/register', userRoute.register);
+app.get('/waste/donor/signin', userRoute.signin);
+app.get('/waste/collector/register', collectorRoutes.register);
+app.get('/waste/collector/signin', collectorRoutes.signin);
+app.post('/create/donor/account', userRoute.handleCreateAccount);
+app.post('/waste/donor/signin', userRoute.handleSigninRequest);
+app.post('/add/bins', userRoute.handleAddBins);
+app.post('/create/collector/account', collectorRoutes.handleCreateAccount);
+app.post('/waste/collector/signin', collectorRoutes.handleSigninRequest);
+
 // app.get('/collector/:id?/bins', collectorRoutes.readyToCollectBins);
 // app.post('/account/collector/:id');
 

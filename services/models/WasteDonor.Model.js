@@ -13,14 +13,14 @@ module.exports = (pool) => {
             account.password,
             account.verification
         ]
-        let res = await pool.query('INSERT INTO waste_donor (firstname, lastname, cell_number, email, residential_address, age, gender, id_number, user_password, verification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', user);
-        // if (res.rows) {
-        //     // console.log(res.rows[0].id);
-        //     let res = await pool.query('SELECT id FROM waste_type');
-        //     console.log(res.rows);
-        //     await pool.query('INSERT INTO waste_bin (waste_donor_id, waste_type_id) VALUES ($1, $2)', []);
-        // }
-        return res;
+        let check = await pool.query('select * from waste_donor where id_number = $1', [account.idNumber]);
+        if (check.rows.length === 0) {
+            let res = await pool.query('INSERT INTO waste_donor (firstname, lastname, cell_number, email, residential_address, age, gender, id_number, user_password, verification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', user);
+            return { response: 'Account was created' }
+        } else {
+            return { response: 'Account already exist' };
+
+        }
     }
 
     const findAccount = async (firstName) => {
@@ -33,16 +33,25 @@ module.exports = (pool) => {
         return res.rows[0];
     }
 
+    const findAccountByEmail = async (email) => {
+        let res = await pool.query('select * from waste_donor where email = $1', [email]);
+        if (res.rows.length !== 0) {
+            return res.rows[0];
+        } else {
+            return { response: 'Account doesnt exist' }
+        }
+    }
+
     const getAccounts = async () => {
         let res = await pool.query('select * from waste_donor');
-        console.log(res.rows);
         return res.rows;
-     }
+    }
 
     return {
         createAccount,
         findAccount,
         findAccountById,
-        getAccounts
+        getAccounts,
+        findAccountByEmail
     }
 }
