@@ -28,7 +28,7 @@
     <link rel="stylesheet" type="text/css" href="/dist/components/icon.css">
     <link rel="stylesheet" type="text/css" href="/dist/components/registerpage.css">
 
-    <script src="assets/library/jquery.min.js"></script>
+    <script src="/assets/library/jquery.min.js"></script>
     <script src="/dist/components/form.js"></script>
     <script src="/dist/components/transition.js"></script>
 
@@ -55,6 +55,45 @@
             border-width: 4px;
         }
     </style>
+
+    <script>
+    $(document)
+      .ready(function () {
+        $('.ui.form')
+          .form({
+            fields: {
+              email: {
+                identifier: 'email',
+                rules: [
+                  {
+                    type: 'empty',
+                    prompt: 'Please enter your e-mail'
+                  },
+                  {
+                    type: 'email',
+                    prompt: 'Please enter a valid e-mail'
+                  }
+                ]
+              },
+              password: {
+                identifier: 'password',
+                rules: [
+                  {
+                    type: 'empty',
+                    prompt: 'Please enter your password'
+                  },
+                  {
+                    type: 'length[6]',
+                    prompt: 'Your password must be at least 6 characters'
+                  }
+                ]
+              }
+            }
+          })
+          ;
+      })
+      ;
+  </script>
 </head>
 
 <body>

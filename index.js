@@ -5,7 +5,7 @@ const BinService = require('./collector');
 require('dotenv').config();
 const pg = require('pg');
 const session = require('express-session');
-const { flash } = require('express-flash-message');
+const flash = require('express-flash');
 const exphbs = require('express-handlebars');
 const UserAccountRoutes = require('./services/esmartRoutes/UserAccounts');
 const AdminRotes = require('./services/esmartRoutes/AdminRoutes/Admin');
@@ -18,14 +18,26 @@ const CreateWasteCollectorAccount = require('./services/accounts/CreateWasteColl
 
 // postgres database setup
 const { Pool } = pg;
+let useSSL = false;
+const local = process.env.LOCAL || false;
+if (process.env.DATABASE_URL && !local) {
+  useSSL = true;
+}
 
 const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
 const pool = new Pool({
   connectionString,
-  ssl: { rejectUnauthorized: false }
+  ssl: useSSL
 });
 
 
+app.use(session({
+  secret : "secret",
+  resave: false,
+  saveUninitialized: true
+}));
+
+app.use(flash());
 
 // { rejectUnauthorized: false }
 

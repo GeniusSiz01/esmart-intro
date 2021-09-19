@@ -107,24 +107,29 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
 
     const handleSigninRequest = async (req, res) => {
         const { email, password } = req.body;
-        let account = await wasteDonor.findAccountByEmail(email);
-        console.log(account);
-        let hashPassword = account.user_password;
-        console.log(hashPassword + ' user password');
-        bcrypt.compare(password, hashPassword, async (err, userPassword) => {
-            if (err) console.error(err);
-            console.log(userPassword);
-            if (userPassword) {
-                res.redirect(`/account/donor/${account.id}`);
-            }
-        });
+        let donor = await wasteDonor.findAccountByEmail(email);
+        if (donor.response === 'Account not found') {
+            req.flash('info', donor.response);
+            res.redirect('/waste/donor/signin');
+        } else {
+            let hashPassword = donor.account.user_password;
+            bcrypt.compare(password, hashPassword, async (err, userPassword) => {
+                if (err) console.error(err);
+                if (userPassword) {
+                    res.redirect(`/account/donor/${donor.account.id}`);
+                } else {
+                    req.flash('info', 'You have entered an invalid email or password');
+                    res.redirect('/waste/donor/signin');
+                }
+            });
+        }
+
+
     }
 
     const handleAddBins = async (req, res) => {
-        // console.log(req.body);
         const { bins, donor } = req.body;
-        let makeBins = await wasteBins.createBins(donor, bins);
-        // console.log(makeBins);
+        await wasteBins.createBins(donor, bins);
         res.redirect(`/account/donor/${donor}`);
     }
 
