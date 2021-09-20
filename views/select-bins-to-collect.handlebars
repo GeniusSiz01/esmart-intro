@@ -21,8 +21,8 @@
 
     <div class="row">
         <div class="col-6">
-            <img src="/images/esmartbin.png" width="50" style="float: left;">
-            <h3>Welcome to eSmart solutions {{collector}}</h3>
+            {{!-- <img src="/images/esmartbin.png" width="50" style="float: left;"> --}}
+            {{!-- <h3>Welcome to eSmart solutions {{collector}}</h3> --}}
         </div>
     </div>
 
@@ -31,7 +31,7 @@
 
     <div class="row">
         <div class="col-12 center">
-            <h2>Ready for Collection</h2>
+            <h2>Select bins for Collection</h2>
         </div>
     </div>
 
@@ -49,13 +49,13 @@
             <div class="tbc-container center tbc-box">
                 <div class="details">
                     <h3>{{firstname}} {{lastname}}</h3>
-                    {{!-- <p>Bin Count: {{binCount}}</p> --}}
+                    <p>Bin Count: {{binCount}}</p>
                     <h5>{{address}}</h5>
                 </div>
 
                 <form method="POST" action="/collect/bin">
 
-                    <input type="hidden" name="donorId" value="{{id}}">
+                    {{!-- <input type="hidden" name="binId" value="{{id}}"> --}}
                     <input type="hidden" name="collectorId" value="{{../collectorId}}">
                     <button type="submit">collect</button>
 

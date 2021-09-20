@@ -53,7 +53,7 @@ module.exports = (pool) => {
         if (res.rows.length !== 0) {
             return { response: 'Account found', account: res.rows[0] };
         } else {
-            return { response: 'Account doesnt exist' }
+            return { response: 'Account not found' }
         }
     }
 

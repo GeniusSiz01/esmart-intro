@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const saltRounds = 10;
 
-module.exports = (wasteCollector, collectorAccount, wasteDonor) => {
+module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
 
     const displayCollectorLandingPage = async (req, res) => {
         let results = await wasteCollector.getAccounts();
@@ -16,7 +16,7 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor) => {
         let account = await wasteCollector.findAccountById(id);
         res.render('collector-home-page', {
             collectorName: account.first_name + " " + account.last_name,
-            id: account.id
+            collectorId: account.id
 
         });
     }
@@ -40,9 +40,28 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor) => {
             let wasteBins = {
                 wasteDonorsList: []
             }
+
+            let binsToBeCollectedList = [
+                {
+                    firstName: '',
+                    binCount: 0
+                }
+            ]
+
+            let people = {
+                firstname: '',
+                count: 0
+            }
+
+
+            // console.log(bins);
             let out = await _.groupBy(bins, 'waste_donor_id');
+            let fullBins = await _.groupBy(bins, 'firstname')
             let newArray = []
             wasteBins.wasteDonorsList.push(out);
+            // console.log(fullBins);
+            const value = Object.entries(fullBins);
+            // console.log(value);
             // console.log(wasteBins.wasteDonorsList);
             let donorBinsList = wasteBins.wasteDonorsList[0];
             const keys = Object.keys(out);
@@ -51,11 +70,26 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor) => {
                 const donorsId = Number(keys[x]);
                 let getAccounts = await wasteDonor.findAccountById(donorsId);
                 newArray.push(getAccounts);
+                // console.log(getAccounts.firstname);
+                let myBins = await wasteBin.getFullBinForDonor(getAccounts.id);
+                // console.log(myBins);
+                for (let x = 0; x < myBins.length; x++) {
+                    const setName = myBins[x];
+                    // setName.firstName = getAccounts.firstname;
+                    // console.log(setName.firstname);
+                    if (setName.firstname === setName.firstname) {
+
+                    }
+
+                }
             }
+
+            console.log(collector.id);
 
             res.render('ready-to-collect-bins', {
                 collector: `${collector.first_name} ${collector.last_name}`,
-                readyBins: newArray
+                readyBins: newArray,
+                collectorId: collector.id
             });
         } else {
             res.render('ready-to-collect-bins', {
@@ -106,6 +140,7 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor) => {
             req.flash('info', collector.response);
             res.redirect('/waste/collector/signin');
         } else {
+            console.log(collector);
             let hashPassword = collector.account.user_password;
             bcrypt.compare(password, hashPassword, async (err, userPassword) => {
                 if (err) console.error(err);
@@ -120,6 +155,24 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor) => {
 
     }
 
+    const collectBin = async (req, res) => {
+        const { donorId, collectorId } = req.body;
+        const id = Number(donorId);
+        let myBins = await wasteBin.getFullBinForDonor(id);
+        if (myBins.length !== 0) {
+            await wasteBin.resetBinsCapacity(id);
+            res.redirect('/select/bin');    
+        }
+
+    }
+
+    const selectBins = async (req, res) => {
+        // console.log(req.body);
+        // const { donorId, collectorId } = req.params;
+        // console.log(donorId);
+        res.render('thank-you-screen');
+    }
+
     return {
         displayCollectorLandingPage,
         getWasteCollectorAccount,
@@ -128,6 +181,8 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor) => {
         register,
         signin,
         handleCreateAccount,
-        handleSigninRequest
+        handleSigninRequest,
+        collectBin,
+        selectBins
     }
 }
