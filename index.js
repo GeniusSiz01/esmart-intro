@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const { urlencoded, json } = require('body-parser');
-const BinService = require('./collector');
 require('dotenv').config();
 const pg = require('pg');
 const session = require('express-session');

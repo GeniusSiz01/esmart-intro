@@ -15,7 +15,7 @@ describe("Testing the link to add bins functionality", () => {
         await pool.query('DELETE FROM waste_bin');
     });
 
-    it('Should return that "James" has added bins to account', async () => {
+    it('Should return that "Sibusiso" has added bins to account', async () => {
         let wasteBinsMode = WasteBinsMode(pool);
         let wasteDonorModel = WasteDonorModel(pool);
         let donor = DonorAccount(wasteDonorModel);
@@ -36,6 +36,8 @@ describe("Testing the link to add bins functionality", () => {
         await donor.create(sibusiso);
         let donorId = await wasteDonorModel.findAccount(sibusiso.firstName);
         let binType = await wasteBinsMode.getAllBinTypes();
+        // console.log(binType);
+        console.log(donorId.id);
         let res = await wasteBinsMode.createBins(donorId.id, binType);
         equal(res.response, "Waste bins are now working");
     });
