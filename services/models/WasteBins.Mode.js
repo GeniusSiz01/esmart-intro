@@ -9,7 +9,7 @@ module.exports = (pool) => {
         const binTypes = Array.isArray(binTypeId) ? binTypeId : [binTypeId];
         let isAdded = false;
         for (let x = 0; x < binTypes.length; x++) {
-            let res = await pool.query('INSERT INTO waste_bin (weight, filled_capacity, waste_donor_id, waste_type_id) VALUES ($1, $2, $3, $4) RETURNING *', [0, 0, donorId, binTypes[x]]);
+            let res = await pool.query('INSERT INTO waste_bin (weight, filled_capacity, waste_donor_id, waste_type_id) VALUES ($1, $2, $3, $4) RETURNING *', [0, 0, donorId, binTypes[x].id]);
             isAdded = true;
         }
         if (!isAdded) {
