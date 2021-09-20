@@ -32,7 +32,7 @@ const pool = new Pool({
 
 
 app.use(session({
-  secret : "secret",
+  secret: "secret",
   resave: false,
   saveUninitialized: true
 }));
@@ -153,7 +153,7 @@ let donorAccount = CreateWasteDonorAccount(wasteDonormodel);
 let collectorAccount = CreateWasteCollectorAccount(wasteCollector);
 let userRoute = UserAccountRoutes(wasteBinsModel, wasteDonormodel, donorAccount);
 let adminRoute = AdminRotes(wasteBinsModel);
-let collectorRoutes = CollectorAcountRoutes(wasteCollector, collectorAccount, wasteDonormodel);
+let collectorRoutes = CollectorAcountRoutes(wasteCollector, collectorAccount, wasteDonormodel, wasteBinsModel);
 
 
 app.get('/account/donor/:id?', userRoute.getWasteDonorAccount);
@@ -174,6 +174,8 @@ app.post('/waste/donor/signin', userRoute.handleSigninRequest);
 app.post('/add/bins', userRoute.handleAddBins);
 app.post('/create/collector/account', collectorRoutes.handleCreateAccount);
 app.post('/waste/collector/signin', collectorRoutes.handleSigninRequest);
+app.post('/collect/bin', collectorRoutes.collectBin);
+app.get('/select/bin', collectorRoutes.selectBins);
 
 // app.get('/collector/:id?/bins', collectorRoutes.readyToCollectBins);
 // app.post('/account/collector/:id');
