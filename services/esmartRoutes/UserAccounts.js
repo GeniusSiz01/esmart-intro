@@ -22,7 +22,6 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
 
     const getWasteDonorAccount = async (req, res) => {
         let { id } = req.params;
-        console.log(id);
         // let account = await wasteDonor.findAccount(newFirstName);
         let account = await wasteDonor.findAccountById(id);
         let bins = await wasteBins.getDonorBins(id);
@@ -133,6 +132,30 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
         res.redirect(`/account/donor/${donor}`);
     }
 
+    const handleHistoryRequest = async (req, res) => {
+        const { id } = req.params;
+        res.redirect(`/donor/show/details/${id}`);
+
+    }
+
+    const renderHistoryDetails = async (req, res) => {
+        const { id } = req.params;
+        const donorId = Number(id);
+        const historyBins = await wasteBins.getHistoryForDonor(donorId);
+        if (historyBins.length !== 0) {
+            res.render('donor-history-details-page', {
+                bins: historyBins,
+                donorId: donorId
+            });
+        } else { 
+            res.render('donor-history-details-page', {
+                donorId: donorId,
+                status:'No bins available'
+            });
+        }
+
+    }
+
     return {
         index,
         wasteDonorBins,
@@ -144,6 +167,8 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
         signin,
         handleCreateAccount,
         handleSigninRequest,
-        handleAddBins
+        handleAddBins,
+        handleHistoryRequest,
+        renderHistoryDetails
     }
 }
