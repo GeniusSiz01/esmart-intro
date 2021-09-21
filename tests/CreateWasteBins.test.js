@@ -36,10 +36,10 @@ describe("Testing the link to add bins functionality", () => {
         await donor.create(sibusiso);
         let donorId = await wasteDonorModel.findAccount(sibusiso.firstName);
         let binType = await wasteBinsMode.getAllBinTypes();
-        // console.log(binType);
-        console.log(donorId.id);
-        let res = await wasteBinsMode.createBins(donorId.id, binType);
-        equal(res.response, "Waste bins are now working");
+        console.log(binType);
+        // console.log(donorId.id);
+        // let res = await wasteBinsMode.createBins(donorId.id, binType);
+        // equal(res.response, "Waste bins are now working");
     });
 
     after(() => {

@@ -31,43 +31,53 @@
 
     <div class="row">
         <div class="col-12 center">
-            <h2>Select bins for Collection</h2>
+            <h2>Select bins to be Collected for {{donorName}}</h2>
         </div>
     </div>
 
+
+    {{!-- {{#each bins }}
+    <div class="block canter">
+        <strong>{{name}}</strong>
+        <p> {{filled_capacity}}%</p>
+        <img src="/images/esmartbin.png" width="80">
+    </div>
+    {{/each}} --}}
 
     <div class="row">
         <div class="col-12 center">
             <h5>{{status}}</h5>
         </div>
     </div>
-
-    <div class="ui stackable four column grid center">
-
-        {{#each readyBins}}
-        <div class="column">
-            <div class="tbc-container center tbc-box">
-                <div class="details">
-                    <h3>{{firstname}} {{lastname}}</h3>
-                    <p>Bin Count: {{binCount}}</p>
-                    <h5>{{address}}</h5>
+    <form action="/collecting/bins" method="POST">
+        <div class="ui stackable four column grid center">
+            {{#each bins}}
+            <div class="column">
+                <div class="block canter">
+                    <strong>{{name}}</strong>
+                    <p> {{filled_capacity}}%</p>
+                    <img src="/images/esmartbin.png" width="80">
+                    {{!-- <div class="ui checkbox">
+                        <input type="checkbox" value="{{id}}" name="binTypes">
+                        <label>Select bin</label>
+                    </div> --}}
+                    <input type="text" value="{{waste_type_id}}" name="binTypes" hidden>
                 </div>
-
-                <form method="POST" action="/collect/bin">
-
-                    {{!-- <input type="hidden" name="binId" value="{{id}}"> --}}
-                    <input type="hidden" name="collectorId" value="{{../collectorId}}">
-                    <button type="submit">collect</button>
-
-                </form>
-
+            </div>
+            {{/each}}
+        </div>
+        <div class="row">
+            <div class="col-12 center">
+                <input type="text" name="collectorId" value="{{collectorId}}" hidden>
+                <input type="text" name="donorId" value="{{donorId}}" hidden>
+                <button type="submit" class="ui button">
+                    Collect
+                </button>
             </div>
         </div>
-        {{/each}}
-        {{!-- <div class="column">hell</div> --}}
-        {{!-- <div class="column">ehh</div> --}}
-        {{!-- <div class="column">eeee</div> --}}
-    </div>
+    </form>
+
+
 </body>
 
 </html>

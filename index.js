@@ -29,6 +29,7 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
+// 
 
 app.use(session({
   secret: "secret",
@@ -174,7 +175,14 @@ app.post('/add/bins', userRoute.handleAddBins);
 app.post('/create/collector/account', collectorRoutes.handleCreateAccount);
 app.post('/waste/collector/signin', collectorRoutes.handleSigninRequest);
 app.post('/collect/bin', collectorRoutes.collectBin);
-app.get('/select/bin', collectorRoutes.selectBins);
+// app.get('/select/bin', collectorRoutes.selectBins)
+app.get('/collect/bins/:donorId?/:collectorId?', collectorRoutes.selectBins);
+app.post('/collecting/bins', collectorRoutes.collecting);
+app.get('/bins/history/:id', collectorRoutes.renderHistory);
+app.post('/bins/history/details', collectorRoutes.handleDeatilsRequest);
+app.get('/bins/history/view/:donorId?/:collectorId?', collectorRoutes.renderDetails);
+app.post('/donor/history/:id?', userRoute.handleHistoryRequest);
+app.get('/donor/show/details/:id?', userRoute.renderHistoryDetails);
 
 // app.get('/collector/:id?/bins', collectorRoutes.readyToCollectBins);
 // app.post('/account/collector/:id');

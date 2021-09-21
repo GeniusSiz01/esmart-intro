@@ -35,56 +35,16 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
         let collectorId = Number(id);
         let collector = await wasteCollector.findAccountById(collectorId);
         let bins = await wasteCollector.collectFullBins();
-        // console.log(bins);
         if (bins.length !== 0) {
-            let wasteBins = {
-                wasteDonorsList: []
-            }
-
-            let binsToBeCollectedList = [
-                {
-                    firstName: '',
-                    binCount: 0
-                }
-            ]
-
-            let people = {
-                firstname: '',
-                count: 0
-            }
-
-
-            // console.log(bins);
-            let out = await _.groupBy(bins, 'waste_donor_id');
-            let fullBins = await _.groupBy(bins, 'firstname')
-            let newArray = []
-            wasteBins.wasteDonorsList.push(out);
-            // console.log(fullBins);
-            const value = Object.entries(fullBins);
-            // console.log(value);
-            // console.log(wasteBins.wasteDonorsList);
-            let donorBinsList = wasteBins.wasteDonorsList[0];
+            let out = _.groupBy(bins, 'waste_donor_id');
+            let newArray = [];
             const keys = Object.keys(out);
 
             for (let x = 0; x < keys.length; x++) {
                 const donorsId = Number(keys[x]);
                 let getAccounts = await wasteDonor.findAccountById(donorsId);
                 newArray.push(getAccounts);
-                // console.log(getAccounts.firstname);
-                let myBins = await wasteBin.getFullBinForDonor(getAccounts.id);
-                // console.log(myBins);
-                for (let x = 0; x < myBins.length; x++) {
-                    const setName = myBins[x];
-                    // setName.firstName = getAccounts.firstname;
-                    // console.log(setName.firstname);
-                    if (setName.firstname === setName.firstname) {
-
-                    }
-
-                }
             }
-
-            console.log(collector.id);
 
             res.render('ready-to-collect-bins', {
                 collector: `${collector.first_name} ${collector.last_name}`,
@@ -158,19 +118,102 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
     const collectBin = async (req, res) => {
         const { donorId, collectorId } = req.body;
         const id = Number(donorId);
-        let myBins = await wasteBin.getFullBinForDonor(id);
-        if (myBins.length !== 0) {
-            await wasteBin.resetBinsCapacity(id);
-            res.redirect('/select/bin');    
-        }
+        res.redirect(`/collect/bins/${donorId}/${collectorId}`);
+        // let myBins = await wasteBin.getFullBinForDonor(id);
+        // if (myBins.length !== 0) {
+        //     await wasteBin.resetBinsCapacity(id);
+        //     res.redirect('/select/bin');    
+        // }
 
     }
 
     const selectBins = async (req, res) => {
-        // console.log(req.body);
-        // const { donorId, collectorId } = req.params;
+        const { donorId, collectorId } = req.params;
         // console.log(donorId);
-        res.render('thank-you-screen');
+        const donor = Number(donorId);
+        const collector = Number(collectorId);
+        const getDonorBins = await wasteBin.getFullBinForDonor(donor);
+        console.log(getDonorBins);
+        if (getDonorBins.length !== 0) {
+            res.render('select-bins-to-collect', {
+                bins: getDonorBins,
+                donorName: `${getDonorBins[0].firstname} ${getDonorBins[0].lastname}`,
+                collectorId: collector,
+                donorId: donor
+            });
+        } else {
+            res.render('select-bins-to-collect', {
+                status: 'No bins avalable for collection'
+            });
+        }
+
+    }
+
+    const collecting = async (req, res) => {
+        const { collectorId, binTypes, donorId } = req.body;
+        console.log(req.body);
+        let date = new Date();
+        const collector = Number(collectorId);
+        const donor = Number(donorId);
+        req.flash('info', 'Check your bin collection history');
+        const bins = Array.isArray(binTypes) ? binTypes : [binTypes];
+        for (let x = 0; x < bins.length; x++) {
+            const binIds = bins[x];
+            let strToNumber = Number(binIds);
+            const binData = {
+                date: date,
+                status: 'Collected',
+                binId: strToNumber,
+                donorId: donor,
+                collectorId: collector,
+                weight: 0,
+                binType: strToNumber
+            }
+            await wasteBin.binActivity(binData);
+        }
+        await wasteBin.resetBinsCapacity(donor);
+
+        res.redirect(`/account/collector/${collector}`);
+    }
+
+    const renderHistory = async (req, res) => {
+        const { id } = req.params;
+        const collectorId = Number(id);
+        const historyBins = await wasteBin.getHistory(collectorId);
+        let donorsList = [];
+        const sortBinsById = _.groupBy(historyBins, 'waste_donor_id');
+        const getSortedBinsKey = Object.keys(sortBinsById);
+        for (let x = 0; x < getSortedBinsKey.length; x++) {
+            const donor_id = Number(getSortedBinsKey[x]);
+            let getAccounts = await wasteDonor.findAccountById(donor_id);
+            donorsList.push(getAccounts);
+        }
+        console.log(donorsList);
+        res.render('collecter-history-page', {
+            bins: donorsList,
+            collectorId: collectorId
+        });
+    }
+
+    const handleDeatilsRequest = async (req, res) => {
+        const { donorId, collectorId } = req.body;
+        const donor = Number(donorId);
+        const collector = Number(collectorId);
+
+        res.redirect(`/bins/history/view/${donor}/${collector}`);
+    }
+
+    const renderDetails = async (req, res) => {
+        const { donorId, collectorId } = req.params;
+        const donor = Number(donorId);
+        const collector = Number(collectorId);
+        const historyBins = await wasteBin.getHistory(collector);
+        console.log(historyBins);
+        res.render('history-details-page', {
+            bins: historyBins,
+            donorName: `${historyBins[0].firstname} ${historyBins[0].lastname}`,
+            collectorId: collectorId
+        });
     }
 
     return {
@@ -183,6 +226,10 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
         handleCreateAccount,
         handleSigninRequest,
         collectBin,
-        selectBins
+        selectBins,
+        collecting,
+        renderHistory,
+        handleDeatilsRequest,
+        renderDetails
     }
 }
