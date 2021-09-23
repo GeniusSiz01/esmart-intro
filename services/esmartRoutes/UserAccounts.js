@@ -2,14 +2,14 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 module.exports = (wasteBins, wasteDonor, donorAccount) => {
 
-    const index = async (req, res) => {
+    const index = async(req, res) => {
 
         res.render('home', {
 
         });
     }
 
-    const wasteDonorBins = async (req, res) => {
+    const wasteDonorBins = async(req, res) => {
         let { user } = req.params;
         let newFirstName = user.trim();
         newFirstName = newFirstName.charAt(0).toUpperCase() + (newFirstName.slice(1)).toLowerCase();
@@ -20,7 +20,7 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
         // 
     }
 
-    const getWasteDonorAccount = async (req, res) => {
+    const getWasteDonorAccount = async(req, res) => {
         let { id } = req.params;
         // let account = await wasteDonor.findAccount(newFirstName);
         let account = await wasteDonor.findAccountById(id);
@@ -45,7 +45,7 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
         }
     }
 
-    const displayDonorLandingPage = async (req, res) => {
+    const displayDonorLandingPage = async(req, res) => {
         let results = await wasteDonor.findAccountById(5);
         let accounts = await wasteDonor.getAccounts();
         res.render('donor-landing-screen', {
@@ -54,13 +54,17 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
         });
     }
 
-    const simulateBins = async (req, res) => {
-        let { id } = req.params;
-        let results = await wasteBins.updateBinsCapacity(id);
-        res.redirect(`/account/donor/${id}`);
+    const simulateBins = async(req, res) => {
+        let { binTypes, donorId } = req.body;
+        const bins = Array.isArray(binTypes) ? binTypes : [binTypes];
+        for (let x = 0; x < bins.length; x++) {
+            const binId = bins[x];
+            await wasteBins.updateBinsCapacity(donorId, Number(binId));
+        }
+        res.redirect(`/account/donor/${Number(donorId)}`);
     }
 
-    const resetBins = async (req, res) => {
+    const resetBins = async(req, res) => {
         let { id } = req.params;
         await wasteBins.resetBinsCapacity(id);
         res.redirect(`/account/donor/${id}`);
@@ -74,11 +78,11 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
         res.render('waste-donor-signin-page');
     }
 
-    const handleCreateAccount = async (req, res) => {
+    const handleCreateAccount = async(req, res) => {
         const { Firstname, Lastname, Phonenumber, email, Idnuber, password, gender } = req.body;
         if (password[0] === password[0]) {
             console.log(password);
-            bcrypt.hash(password, 10, async (err, hashedPassword) => {
+            bcrypt.hash(password, 10, async(err, hashedPassword) => {
                 if (err) console.error(err);
                 const account = {
                     firstName: Firstname,
@@ -104,7 +108,7 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
         }
     }
 
-    const handleSigninRequest = async (req, res) => {
+    const handleSigninRequest = async(req, res) => {
         const { email, password } = req.body;
         let donor = await wasteDonor.findAccountByEmail(email);
         if (donor.response === 'Account not found') {
@@ -112,7 +116,7 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
             res.redirect('/waste/donor/signin');
         } else {
             let hashPassword = donor.account.user_password;
-            bcrypt.compare(password, hashPassword, async (err, userPassword) => {
+            bcrypt.compare(password, hashPassword, async(err, userPassword) => {
                 if (err) console.error(err);
                 if (userPassword) {
                     res.redirect(`/account/donor/${donor.account.id}`);
@@ -126,19 +130,19 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
 
     }
 
-    const handleAddBins = async (req, res) => {
+    const handleAddBins = async(req, res) => {
         const { bins, donor } = req.body;
         await wasteBins.createBins(donor, bins);
         res.redirect(`/account/donor/${donor}`);
     }
 
-    const handleHistoryRequest = async (req, res) => {
+    const handleHistoryRequest = async(req, res) => {
         const { id } = req.params;
         res.redirect(`/donor/show/details/${id}`);
 
     }
 
-    const renderHistoryDetails = async (req, res) => {
+    const renderHistoryDetails = async(req, res) => {
         const { id } = req.params;
         const donorId = Number(id);
         const historyBins = await wasteBins.getHistoryForDonor(donorId);
@@ -147,10 +151,10 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
                 bins: historyBins,
                 donorId: donorId
             });
-        } else { 
+        } else {
             res.render('donor-history-details-page', {
                 donorId: donorId,
-                status:'No bins available'
+                status: 'No bins available'
             });
         }
 
