@@ -1,14 +1,19 @@
-import logo from './logo.svg';
-// import './App.css';
-import { Container, Row, Col } from 'bootstrap-4-react';
-import HomeScreen from './pages/HomeScreen';
+import React from 'react';
+import Router from './Router';
+import Auth from './utils/Auth';
+import CollectorAuth from './utils/CollectorAuth';
 
-function App() {
-  return (
-    <Container >
-      <HomeScreen />
-    </Container>
-  );
-}
 
-export default App;
+export default class App extends React.Component {
+
+    async componentDidMount() {
+        await Auth.check();
+        await CollectorAuth.check();
+    }
+
+    render() {
+        return (
+            <Router />
+        );
+    }
+};

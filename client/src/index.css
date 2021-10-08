@@ -5,18 +5,127 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
-  background-color: #52B788;
+  background-color: rgba(82, 183, 136, 0.74) !important;
+  font-family: UberMove, UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  /* font-family: sans-serif !important; */
+  /* position: fixed; */
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .btn1 {
-  background-color: #d8d5d5;
+  background-color: #C4C4C4 !important;
+  border-radius: 0.5em !important;
+  border-width: 4px !important;
+  width: 200px !important;
+  height: 40px !important;
+}
+
+.block {
+  display: inline-block;
+  width: 140px;
+  height: 150px;
+  background-color: #C4C4C4;
   border-radius: 0.5em;
-  border-width: 4px;
-  width: 200px;
-  height: 40px;  
+  margin: 8px;
+  font-size: 14px;
+  padding: 5px;
+  align-items: center;
+}
+
+.center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.test {
+  background-color: #C4EFA1 !important;
+}
+
+.appHeader {
+  /* font-family: Raleway !important; */
+  font-style: italic !important;
+  font-weight: 600 !important;
+  font-size: 48px !important;
+  line-height: 56px !important;
+  text-align: center !important;
+}
+
+.appSlogan {
+  /* font-family: Raleway; */
+  font-style: italic !important;
+  font-weight: 600 !important;
+  font-size: 20px !important;
+  line-height: 13px !important;
+  position: absolute !important;
+  /* width: 226px !important; */
+  /* height: 13px !important; */
+  /* identical to box height */
+  text-align: center;
+}
+
+.signUpBtn {
+  background-color: #FFFFFF !important;
+  color: black !important;
+  border-bottom-left-radius: 30px !important;
+  border-top-left-radius: 30px !important;
+  border-bottom-right-radius: 30px !important;
+  border-top-right-radius: 30px !important;
+  transition-duration: 200ms !important;
+  transition-timing-function: cubic-bezier(0, 0, 1, 1) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  font-family: UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  padding-right: 10px !important;
+  padding-left: 10px !important;
+  padding-bottom: 10px !important;
+  padding-top: 10px !important;
+  padding: 100%;
+}
+
+.appNav {
+  color: black !important;
+}
+
+
+.companyName {
+  font-size: 20px !important;
+}
+
+.custom-nav-container {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  width: 102%;
+}
+
+.appLinks {
+  /* margin-bottom: 16px !important; */
+  /* margin-top: 16px !important; */
+  line-height: 20px !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  color: #000000 !important;
+}
+
+.appUl{
+  padding-right: 24px;
+  border-left: none;
+  position: relative;
+  padding-left: 24px;
+  padding-bottom: 0;
+  padding-top: 0;
+  overflow: auto;
+  margin-left: 0;
+}
+ul {
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
 }
