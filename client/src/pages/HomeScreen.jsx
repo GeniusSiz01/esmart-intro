@@ -1,7 +1,7 @@
 import React from 'react';
 import eSmartLogo from '../esmartbin.png';
 import { BDiv, Row, Col, Button } from 'bootstrap-4-react';
-import logo from '../logo.svg';
+
 
 console.log(eSmartLogo);
 export default class HomeScreen extends React.Component {
@@ -11,29 +11,27 @@ export default class HomeScreen extends React.Component {
     }
 
     render() {
-        const boxStyle = {
-            backgroundColor: '#52B788',
-            border: '1px solid rgba(86,61,124,.15)'
-        }
+
         return (
             <div>
-                <BDiv display="flex" justifyContent="center" mb="3">
-                    <h7>One's man trash is another man's opportunity</h7>
+                {/* <BottomTabNavigation /> */}
+                <BDiv display="flex" justifyContent="center" mb="5">
+                    <h7 style={{ paddingTop: 15 }} className='appSlogan'>One's man trash is another man's opportunity</h7>
                 </BDiv>
 
-                <BDiv display="flex" justifyContent="center" mb="3">
-                    <h1>eSmart</h1>
+                <BDiv display="flex" justifyContent="center" mb="5">
+                    <h1 className='appHeader' style={{ fontWeight: 'bold' }}>eSmart</h1>
                 </BDiv>
 
-                <BDiv display="flex" justifyContent="center" mb="3">
+                <BDiv display="flex" justifyContent="center" mb="5">
                     <img src={eSmartLogo} width='200' justifyContent='center' />
                 </BDiv>
 
 
                 <Row className='text-center' >
-                    <Col col="sm"><Button className='btn1' >Waste Donor</Button></Col>
-                    <Col col="sm"><Button className='btn1' >Waste Collector</Button></Col>
-                    <Col col="sm"><Button className='btn1' >Waste depot</Button></Col>
+                    <Col col="sm" mb='4' ><a href="/donor/home"><Button className='btn1' >Waste Donor</Button></a></Col>
+                    <Col col="sm" mb='4'><a href="/collector/home"><Button className='btn1' >Waste Collector</Button></a></Col>
+                    <Col col="sm" mb='4'><Button disabled className='btn1' >Waste depot</Button></Col>
                 </Row>
             </div>
         );

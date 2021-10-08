@@ -1,0 +1,6 @@
+{
+    "database": "postgresql://pgadmin:pg123@localhost:5432/e_smart",
+    "secret": "dirt bag",
+    "tokenLife": "24h",
+    "testing": false
+}

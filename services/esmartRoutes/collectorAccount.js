@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const saltRounds = 10;
+const jwt = require('jsonwebtoken');
+const config = require('../config/config.json');
 
 module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
 
@@ -31,7 +33,7 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
     }
 
     const readyToCollectBins = async (req, res) => {
-        const { id } = req.params;
+        const { id } = req.body;
         let collectorId = Number(id);
         let collector = await wasteCollector.findAccountById(collectorId);
         let bins = await wasteCollector.collectFullBins();
@@ -45,16 +47,10 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
                 let getAccounts = await wasteDonor.findAccountById(donorsId);
                 newArray.push(getAccounts);
             }
-
-            res.render('ready-to-collect-bins', {
-                collector: `${collector.first_name} ${collector.last_name}`,
+            res.json({
+                status: 'success',
                 readyBins: newArray,
-                collectorId: collector.id
-            });
-        } else {
-            res.render('ready-to-collect-bins', {
-                collector: `${collector.first_name} ${collector.last_name}`,
-                status: "No bins availabe"
+                collector: collector
             });
         }
     }
@@ -86,9 +82,17 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
             }
             let results = await wasteCollector.createAccount(account);
             if (results.response === 'Account already exist') {
-                res.redirect('/waste/collector/signin');
+                res.json({
+                    status: 'failure',
+                    reason: 'Trying to create account'
+                })
             } else {
-                res.redirect('/waste/collector/signin');
+                const token = jwt.sign({ userId: results.account.id }, config.secret, { expiresIn: config.tokenLife });
+                res.json({
+                    status: 'success',
+                    reason: 'Created account',
+                    token
+                });
             }
         });
     }
@@ -97,22 +101,49 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
         const { email, password } = req.body;
         let collector = await wasteCollector.findAccountByEmail(email);
         if (collector.response === 'Account not found') {
-            req.flash('info', collector.response);
-            res.redirect('/waste/collector/signin');
+            // req.flash('info', collector.response);
+            // res.redirect('/waste/collector/signin');
         } else {
             console.log(collector);
             let hashPassword = collector.account.user_password;
             bcrypt.compare(password, hashPassword, async (err, userPassword) => {
                 if (err) console.error(err);
                 if (userPassword) {
-                    res.redirect(`/account/collector/${collector.account.id}`);
+                    const token = jwt.sign({ userId: collector.account.id }, config.secret, { expiresIn: config.tokenLife });
+
+                    res.json({
+                        status: 'success',
+                        reason: 'Signing in to account',
+                        token,
+                        auth: true
+                    });
                 } else {
-                    req.flash('info', 'You have entered an invalid email or password');
-                    res.redirect('/waste/collector/signin');
+                    res.json({
+                        status: 'failure',
+                        reason: 'Trying to signin to account',
+                        auth: false
+                    })
                 }
             });
         }
 
+    }
+
+    const verifyToken = (req, res) => {
+        let { token } = req.body;
+        const tokenStatus = jwt.verify(token, config.secret);
+        if (tokenStatus) {
+            res.json({
+                status: 'success',
+                userId: tokenStatus.userId,
+                auth: true
+            });
+        } else {
+            res.json({
+                status: 'failure',
+                auth: false
+            })
+        }
     }
 
     const collectBin = async (req, res) => {
@@ -187,6 +218,7 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
             const donor_id = Number(getSortedBinsKey[x]);
             let getAccounts = await wasteDonor.findAccountById(donor_id);
             donorsList.push(getAccounts);
+
         }
         console.log(donorsList);
         res.render('collecter-history-page', {
@@ -230,6 +262,7 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
         collecting,
         renderHistory,
         handleDeatilsRequest,
-        renderDetails
+        renderDetails,
+        verifyToken
     }
 }
