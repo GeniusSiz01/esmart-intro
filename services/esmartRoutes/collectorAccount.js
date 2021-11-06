@@ -87,7 +87,7 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
                     reason: 'Trying to create account'
                 })
             } else {
-                const token = jwt.sign({ userId: results.account.id }, config.secret, { expiresIn: config.tokenLife });
+                const token = jwt.sign({ userId: results.account.id }, config.secret);
                 res.json({
                     status: 'success',
                     reason: 'Created account',
@@ -109,7 +109,7 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
             bcrypt.compare(password, hashPassword, async (err, userPassword) => {
                 if (err) console.error(err);
                 if (userPassword) {
-                    const token = jwt.sign({ userId: collector.account.id }, config.secret, { expiresIn: config.tokenLife });
+                    const token = jwt.sign({ userId: collector.account.id }, config.secret);
 
                     res.json({
                         status: 'success',
@@ -210,7 +210,7 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
     const renderHistory = async (req, res) => {
         const { id } = req.params;
         const collectorId = Number(id);
-        const historyBins = await wasteBin.getHistory(collectorId);
+        // const historyBins = await wasteBin.getHistory(collectorId);
         let donorsList = [];
         const sortBinsById = _.groupBy(historyBins, 'waste_donor_id');
         const getSortedBinsKey = Object.keys(sortBinsById);
@@ -239,7 +239,7 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
         const { donorId, collectorId } = req.params;
         const donor = Number(donorId);
         const collector = Number(collectorId);
-        const historyBins = await wasteBin.getHistory(collector);
+        // const historyBins = await wasteBin.getHistory(collector);
         console.log(historyBins);
         res.render('history-details-page', {
             bins: historyBins,
@@ -247,6 +247,50 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
             collectorId: collectorId
         });
     }
+
+    const collectWasteDonorFullBins = async (req, res) => {
+        let { donorId } = req.body;
+        let getBins = await wasteBin.getBinsReadyForCollection(donorId);
+        res.json({
+            bins: getBins
+        });
+    }
+
+
+    const handlePickUpBins = async (req, res) => {
+        let { donorId, collectorId, binTypeId } = req.body;
+        const bins = Array.isArray(binTypeId) ? binTypeId : [binTypeId];
+        for (let x = 0; x < bins.length; x++) {
+            const binId = bins[x].id;
+            let request = {
+                dateTime: new Date(),
+                donor: donorId,
+                collector: collectorId,
+                wasteBins: binId,
+                status: true
+            }
+            // console.log(request);
+            await wasteBin.binActivity(request);
+        }
+    }
+
+    const getNotifications = async (req, res) => {
+        let { collectorId } = req.params;
+        let notifications = await wasteBin.getNotificationsForCollectionInProgressForCollector(Number(collectorId));
+        res.json({
+            notifications
+        })
+    }
+
+    const getHistoryForCollector = async (req, res) => {
+        let { collectorId } = req.params;
+        console.log(req.params);
+        let history = await wasteBin.getHistory(Number(collectorId));
+        res.json({
+            history
+        });
+    }
+
 
     return {
         displayCollectorLandingPage,
@@ -263,6 +307,10 @@ module.exports = (wasteCollector, collectorAccount, wasteDonor, wasteBin) => {
         renderHistory,
         handleDeatilsRequest,
         renderDetails,
-        verifyToken
+        verifyToken,
+        collectWasteDonorFullBins,
+        handlePickUpBins,
+        getNotifications,
+        getHistoryForCollector
     }
 }

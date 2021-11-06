@@ -27,6 +27,7 @@ export default class DonorBins extends React.Component {
         let params = {
             donorId: userId
         }
+        console.log(userId);
         axios.get(`http://localhost:3007/home/${userId}`,)
             .then(response => {
                 let binsArray = response.data;
@@ -35,9 +36,13 @@ export default class DonorBins extends React.Component {
                     this.setState({ isLoading: true });
                     axios.post('http://localhost:3007/add/bins', params)
                         .then(response => {
-                            console.log(response.data.isAdded);
+                            console.log(response.data);
                             if (response.data.isAdded) {
-
+                                this.setState()
+                                setTimeout(() => {
+                                    console.log("closing loader.....");
+                                    this.setState({ bins: response.data.bins, isLoading: false });
+                                }, 10000);
                             }
                         });
                 }
@@ -80,7 +85,7 @@ export default class DonorBins extends React.Component {
             <Modal style={{ height: 200 }} size='fullscreen' open={open}>
                 <Modal.Header>{`${binName} waste bin`}</Modal.Header>
                 <Modal.Content>
-                    <p>Are you sure you want to send a request for pick up</p>
+                    <p>Are you sure you want to request for pick-up</p>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button negative onClick={this.handleCloseModal} >
@@ -98,7 +103,7 @@ export default class DonorBins extends React.Component {
         const { bins, isLoading } = this.state;
         return (
             <div className=''>
-                <h5 className='center' style={{ paddingTop: 15 }}>Welcome to eSmart solutions Thabo Khumalo</h5>
+                <h5 className='center' style={{ paddingTop: 15 }}>Welcome to eSmart solutions</h5>
                 <Dimmer active={isLoading}>
                     <Loader content='Allocating bins to your account please wait.' />
                 </Dimmer>
@@ -106,7 +111,7 @@ export default class DonorBins extends React.Component {
                     {bins.map((list) => (
                         <Grid.Column key={`${list.id}`}>
                             <div onClick={this.openModal} id={`${list.id}`} className='block center' >
-                                <p><strong>{`${list.name}`}</strong> {`${list.filled_capacity}`}%</p>
+                                <p><strong>{`${list.name}`}</strong> {`${list.filled_capacity ? 0 : 'empty'}`}</p>
                                 <img src={appLogo} alt="" width='100' />
                                 {/* <Loader active inline='centered' size='mini' content='waiting' /> */}
                             </div>

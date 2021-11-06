@@ -29,6 +29,7 @@ const Auth = {
 
     getAuth() {
         return this.isAuthenticated;
+        // return true
     },
 
     getClientId() {

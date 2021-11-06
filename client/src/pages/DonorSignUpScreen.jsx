@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Form, Grid, Header, Image, Message, Segment, Radio, Checkbox } from 'semantic-ui-react';
 import appLogo from '../esmartbin.png';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from 'axios';
 
 export default class DonorSignUpScreen extends React.Component {
@@ -15,7 +15,8 @@ export default class DonorSignUpScreen extends React.Component {
             email: '',
             idNumber: 0,
             password: '',
-            gender: ''
+            gender: '',
+            isRedirect: false
         }
 
     }
@@ -69,6 +70,7 @@ export default class DonorSignUpScreen extends React.Component {
                     let token = response.data.token;
                     window.localStorage.setItem('sudo', token);
                     console.log(response.data);
+                    this.setState({ isRedirect: true });
                 });
         } else {
             console.log('please enter all details');
@@ -76,7 +78,10 @@ export default class DonorSignUpScreen extends React.Component {
     }
 
     render() {
-        const { value } = this.state;
+        const { value, isRedirect } = this.state;
+        if (isRedirect) {
+            return <Redirect to='/donor/signin' />
+        }
         return (
             <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
                 <Grid.Column style={{ maxWidth: 450 }}>

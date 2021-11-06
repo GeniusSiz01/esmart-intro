@@ -11,7 +11,6 @@ const CollectorAuth = {
             token: ''
         }
         jwt.token = window.localStorage.getItem('sudo');
-        console.log(jwt.token);
         if (jwt.token) {
             await axios.post('http://localhost:3007/verify/collector', jwt)
                 .then(response => {
@@ -30,7 +29,8 @@ const CollectorAuth = {
     },
 
     getAuth() {
-        return this.isAuthenticated;
+        // return this.isAuthenticated;
+        return true
     },
 
     getClientId() {

@@ -79,8 +79,8 @@ export default class ReadyToCollect extends React.Component {
                     <h5>Pick up date</h5>
                     <PickUpScheduler name='date' />
                     <hr />
-                    <h5>Pick up date</h5>
-                    <TimePicker name='time' value={new Date()} onChange={new Date()} />
+                    {/* <h5>Pick up time</h5> */}
+                    {/* <TimePicker name='time' value={new Date()} onChange={new Date()} /> */}
                 </Modal.Actions>
                 <Modal.Actions>
                     <Button negative onClick={this.closeModal} >
@@ -112,7 +112,7 @@ export default class ReadyToCollect extends React.Component {
                                 <Card.Description>
                                     {list.status}
                                 </Card.Description>
-                                <Card.Meta><Icon name='trash' /> Capacity {`${list.filled_capacity}%`}</Card.Meta>
+                                <Card.Meta><Icon name='trash' /> Capacity {`full`}</Card.Meta>
                             </Card.Content>
                             <Label attached='bottom right' >Waiting for collector
 
