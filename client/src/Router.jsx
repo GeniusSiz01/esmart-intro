@@ -9,6 +9,7 @@ import DonorSignInScreen from './pages/DonorSignInScreen';
 import DonorSignUpScreen from './pages/DonorSignUpScreen';
 import DonorBinsToCollect from './pages/DonorBinsToCollect';
 import CollectorSignInScreen from './pages/CollectorSigninScreen';
+import CollectorHistoryScreen from './pages/CollectorHistoryScreen';
 import Auth from './utils/Auth';
 import { Redirect } from 'react-router';
 import CollectorAuth from './utils/CollectorAuth';
@@ -28,6 +29,7 @@ export default class Router extends React.Component {
                         <Route path="/collector/signin" component={CollectorSignInScreen} />
                         <Route path="/collector/signup" component={CollectorSignInScreen} />
                         <WasteCollector path="/collector/home" component={CollectorHomeScreen} />
+                        <WasteCollector path="/collector/history" component={CollectorHistoryScreen} />
                         <Route path="/" component={HomeScreen} />
                     </Switch>
                 </BrowserRouter>

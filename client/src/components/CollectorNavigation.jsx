@@ -2,7 +2,7 @@ import React from 'react';
 import { Nav, NavItem } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faHome, faUserCircle, faComment, faCommentAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faHome, faUserCircle, faComment, faCommentAlt, faTrashAlt,faCalendarTimes } from '@fortawesome/free-solid-svg-icons';
 import AppLogo from '../esmartbin.png';
 
 const tabs = [{
@@ -11,7 +11,7 @@ const tabs = [{
     label: "Home"
 }, {
     route: "/collector/history",
-    icon: faTrashAlt,
+    icon: faCalendarTimes,
     label: "History"
 }, {
     route: "/collector/account",

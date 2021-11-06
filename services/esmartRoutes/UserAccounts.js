@@ -13,7 +13,7 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
 
     const wasteDonorBins = async (req, res) => {
         let { user } = req.params;
-        let bins = await wasteBins.getDonorBins(user);
+        let bins = await wasteBins.getDonorBins(Number(user));
         res.json({
             wasteDonor: bins,
             binCount: bins.length
@@ -22,7 +22,6 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
 
     const getWasteDonorAccount = async (req, res) => {
         let { id } = req.params;
-        console.log();
         // let account = await wasteDonor.findAccount(newFirstName);
         let account = await wasteDonor.findAccountById(id);
         let bins = await wasteBins.getDonorBins(id);
@@ -109,7 +108,7 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
                         reason: 'Trying to create account'
                     })
                 } else {
-                    const token = jwt.sign({ userId: results.account.id }, config.secret, { expiresIn: config.tokenLife });
+                    const token = jwt.sign({ userId: results.account.id }, config.secret);
                     res.json({
                         status: 'success',
                         reason: 'Created account',
@@ -123,7 +122,6 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
     }
 
     const handleSigninRequest = async (req, res) => {
-        console.log(rew.body );
         const { email, password } = req.body;
         console.log(email);
         let donor = await wasteDonor.findAccountByEmail(email);
@@ -136,7 +134,7 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
             bcrypt.compare(password, hashPassword, async (err, userPassword) => {
                 if (err) console.error(err);
                 if (userPassword) {
-                    const token = jwt.sign({ userId: donor.account.id }, config.secret, { expiresIn: config.tokenLife });
+                    const token = jwt.sign({ userId: donor.account.id }, config.secret);
                     res.json({
                         status: 'success',
                         reason: 'Signing in to account',
@@ -178,11 +176,12 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
         let getBinTypes = await wasteBins.getAllBinTypes();
         console.log(getBinTypes);
         let getAddBinsStatus = await wasteBins.createBins(donorId, getBinTypes);
-        console.log();
+        let getDonorBins = await wasteBins.getDonorBins(donorId);
         if (getAddBinsStatus.response === 'Waste bins are now working') {
             res.json({
                 status: 'success',
-                isAdded: true
+                isAdded: true,
+                bins: getDonorBins
             })
         } else {
             res.json({
@@ -225,7 +224,7 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
             userId: userId,
             binId: binId
         }
-
+        console.log(searchQuery);
         await wasteBins.setBinForCollection(searchQuery);
     }
 
@@ -247,6 +246,38 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
         await wasteBins.cancelRequest(searchQuery);
     }
 
+    const allocateBins = async () => {
+        let { donorId } = req.body;
+        const getBins = await wasteBins.getAllBinTypes();
+        console.log(getBins);
+    }
+
+    const getNotifications = async (req, res) => {
+        let { donorId } = req.params;
+        console.log(req.params);
+        let notifications = await wasteBins.getNotificationsForCollectionInProgressForDonor(Number(donorId))
+        res.json({
+            notifications
+        })
+    }
+
+    const closePickUp = async (req, res) => {
+        let { donorId, collectorId } = req.body;
+        let request = {
+            donor: donorId,
+            collector: collectorId
+        }
+        let closingRequest = await wasteBins.closePickUpRequest(request);
+    }
+
+    const getDonorHistory = async (req, res) => {
+        let { donorId } = req.params;
+        let history = await wasteBins.getHistoryForDonor(Number(donorId));
+        res.json({
+            history
+        })
+    }
+
     return {
         index,
         wasteDonorBins,
@@ -264,6 +295,10 @@ module.exports = (wasteBins, wasteDonor, donorAccount) => {
         verifyToken,
         handlePickUpBins,
         showBinsReadyForCollection,
-        cancelPickUpRequest
+        cancelPickUpRequest,
+        allocateBins,
+        getNotifications,
+        closePickUp,
+        getDonorHistory
     }
 }
