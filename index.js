@@ -18,8 +18,10 @@ const cors = require('cors');
 const SocketIO = require('./services/SocketIO');
 const http = require('http')
 const socketio = require('socket.io');
+const cors = require("cors");
 
 // postgres database setup
+app.use(cors());
 const { Pool } = pg;
 let useSSL = false;
 const local = process.env.LOCAL || false;
