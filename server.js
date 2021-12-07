@@ -35,7 +35,7 @@ app.use(cors());
 app.use(urlencoded({ extended: false }))
 app.use(json());
 app.use(express.static('eSmart-front-end/build'));
-var server = app.listen(
+app.listen(
     port,
     console.log(
         `Server is running on the port no: ${(port)} `
