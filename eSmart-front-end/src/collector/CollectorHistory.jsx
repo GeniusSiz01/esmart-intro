@@ -1,30 +1,11 @@
 import React from "react";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import LinearProgress from '@mui/material/LinearProgress';
-import Box from '@mui/material/Box';
 import axios from 'axios';
-import binLogo from '../esmartbin.png';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { styled } from '@mui/material/styles';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import IconButton from '@mui/material/IconButton';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Grid from '@mui/material/Grid';
-import FolderIcon from '@mui/icons-material/Folder';
-import DeleteIcon from '@mui/icons-material/Delete';
 import moment from "moment";
 
 
@@ -46,7 +27,7 @@ export default class CollectorHistory extends React.Component {
         let params = {
             collectorId: 8
         }
-        await axios.get(`https://e-smart-web.herokuapp.com/collector/history/${params.collectorId}`)
+        await axios.get(`/collector/history/${params.collectorId}`)
             .then(response => {
                 let binsArray = response.data;
                 this.setState({ bins: binsArray.history });

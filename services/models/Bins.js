@@ -56,9 +56,11 @@ module.exports = (pool) => {
         console.log(res.rows);
         if (res.rows.length === 0) {
             await pool.query('insert into waste_bin (waste_donor_id, waste_type_id, status, timestamp) values ($1, $2, $3, $4)', [searchQuery.userId, searchQuery.binId, true, new Date()]);
+            return { response: true }
         } else {
             // await pool.query('update waste_bin set status = $1, filled_capacity = 99 where waste_donor_id = $2 and id = $3', [true, searchQuery.userId, searchQuery.binId]);
             console.log('Request has already bin sent');
+            return { response: false }
         };
     };
 
@@ -72,7 +74,7 @@ module.exports = (pool) => {
     };
 
     const getNotificationsForCollectionInProgressForCollector = async (id) => {
-        let res = await pool.query('select waste_bin_collection_activity.id, waste_bin_collection_activity.date_time, waste_bin_collection_activity.status, waste_bin_collection_activity.waste_donor_id, waste_donor.firstname, waste_donor.lastname, waste_type.name from waste_bin_collection_activity inner join waste_donor on waste_donor.id = waste_bin_collection_activity.waste_donor_id inner join waste_type on waste_type.id = waste_bin_collection_activity.waste_type_id where waste_collector_id = $1 and ', [id]);
+        let res = await pool.query('select waste_bin_collection_activity.id, waste_bin_collection_activity.date_time, waste_bin_collection_activity.status, waste_bin_collection_activity.waste_donor_id, waste_donor.firstname, waste_donor.lastname, waste_type.name from waste_bin_collection_activity inner join waste_donor on waste_donor.id = waste_bin_collection_activity.waste_donor_id inner join waste_type on waste_type.id = waste_bin_collection_activity.waste_type_id where waste_collector_id = $1 ', [id]);
         return res.rows;
     };
 

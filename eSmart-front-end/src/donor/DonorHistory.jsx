@@ -27,7 +27,7 @@ export default class DonorHistory extends React.Component {
         let params = {
             donorId: this.state.userId
         }
-        await axios.get(`https://e-smart-web.herokuapp.com/donor/history/${params.donorId}`, params)
+        await axios.get(`/donor/history/${params.donorId}`, params)
             .then(response => {
                 let binsArray = response.data;
                 console.log(binsArray);

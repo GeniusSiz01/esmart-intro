@@ -14,7 +14,7 @@ module.exports = (pool) => {
             account.password,
             account.verification
         ];
-        let check = await pool.query('select * from waste_donor where id_number = $1', [account.idNumber]);
+        let check = await pool.query('select * from waste_donor where cell_number = $1', [account.phoneNumber]);
         if (check.rows.length === 0) {
             await pool.query('INSERT INTO waste_donor (firstname, lastname, cell_number, email, residential_address, age, gender, id_number, user_password, verification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', user);
             return { response: true };
@@ -42,11 +42,21 @@ module.exports = (pool) => {
             return { response: false }
         };
     };
-    
+
+    const findAccountByPhoneNumber = async (phone) => {
+        const res = await pool.query('select * from waste_donor where cell_number = $1', [phone]);
+        if (res.rows.length !== 0) {
+            return { response: true, account: res.rows[0] }
+        } else {
+            return { response: false }
+        }
+    }
+
     return {
         createAccount,
         findAccount,
         findAccountById,
-        findAccountByEmail
+        findAccountByEmail,
+        findAccountByPhoneNumber
     }
 }

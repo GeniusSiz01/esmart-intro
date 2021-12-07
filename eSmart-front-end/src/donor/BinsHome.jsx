@@ -9,8 +9,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import LinearProgress from '@mui/material/LinearProgress';
 import DonorAuth from "../utils/DonorAuth";
+
 
 export default class BinsHome extends React.Component {
     constructor(props) {
@@ -27,11 +27,12 @@ export default class BinsHome extends React.Component {
         }
     }
 
-    componentDidMount() {
-        axios.post(`http://localhost:8000/donor/home`)
+    async componentDidMount() {
+        let body = { uid: this.state.userId }
+        await axios.post(`/donor/home`, body)
             .then(response => {
                 let binsArray = response.data;
-                this.setState({ bins: binsArray.bins });
+                this.setState({ bins: binsArray.bins, firstName: binsArray.account.firstname, lastName: binsArray.account.lastname });
             });
     }
 
@@ -62,9 +63,10 @@ export default class BinsHome extends React.Component {
             binId: binToCollect.id
         }
         if (binToCollect.length !== 0) {
-            await axios.post('http://localhost:8000/donor/send/request', params)
+            await axios.post('/donor/send/request', params)
                 .then(response => {
-
+                    if (response.data.isSent) {
+                    }
                 });
         }
     }
@@ -88,7 +90,7 @@ export default class BinsHome extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button  onClick={this.handleClose}>
+                        <Button onClick={this.handleClose}>
                             Cancel request
                         </Button>
                         <Button onClick={this.handleRequest} >
@@ -102,14 +104,14 @@ export default class BinsHome extends React.Component {
 
 
     render() {
-        let { bins } = this.state;
+        let { bins, firstName } = this.state;
         return (
             <div>
-                <h3 className='center'>Welcome UserTest to eSmart</h3>
-                <Box className='center' sx={{ width: '100%' }}>
+                <h3 className='center'>Welcome to eSmart {firstName}</h3>
+                <Box className='center' sx={{ width: '100%',paddingTop:'30%' }}>
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                         {bins.map((list) => (
-                            <Grid item xs={6}>
+                            <Grid item xs={6} key={list.id}>
                                 <div className='block center' id={list.id} onClick={this.openModal}>
                                     <p><strong>{list.name}</strong></p>
                                     <img src={binImg} width='95' alt="" />

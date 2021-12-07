@@ -13,9 +13,9 @@ module.exports = (pool) => {
             account.password,
             account.verification
         ];
-        let check = await pool.query('select * from waste_collector where id_number = $1', [account.idNumber]);
+        let check = await pool.query('select * from waste_collector where cell_number = $1', [account.cellNumber]);
         if (check.rows.length === 0) {
-            let res = await pool.query('INSERT INTO waste_collector (first_name, last_name, cell_number, vehicle_regNo, email, location, age, gender, id_number, user_password, verification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', user);
+            await pool.query('INSERT INTO waste_collector (first_name, last_name, cell_number, vehicle_regNo, email, location, age, gender, id_number, user_password, verification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)', user);
             return { response: true }
         } else {
             return { response: false };
@@ -52,12 +52,22 @@ module.exports = (pool) => {
         };
     };
 
+    const findAccountByPhoneNumber = async (phone) => {
+        const res = await pool.query('select * from waste_collector where cell_number = $1', [phone]);
+        if (res.rows.length !== 0) {
+            return { response: true, account: res.rows[0] }
+        } else {
+            return { response: false }
+        }
+    }
+
     return {
         createAccount,
         findAccount,
         getAccounts,
         findAccountById,
         collectFullBins,
-        findAccountByEmail
+        findAccountByEmail,
+        findAccountByPhoneNumber
     }
 }
