@@ -5,13 +5,9 @@ import appLogo from '../esmartbin.png';
 import Stack from '@mui/material/Stack';
 
 export default class Home extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
-            <div className='center'>
+            <div  className='center'>
                 <div>
                     <Stack spacing={10}>
                         <div>
@@ -23,7 +19,7 @@ export default class Home extends React.Component {
                         </div>
 
                         <div>
-                            <Grid container spacing={2} columns={16}>
+                            <Grid  container spacing={2} columns={16}>
                                 <Grid item xs={8}>
                                     <a style={{ textDecoration: 'none' }} href="/donor/app">
                                         <Button className='btn1' variant="contained">Waste donor</Button>

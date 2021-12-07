@@ -9,9 +9,9 @@ const CollectorAuth = {
         let jwt = {
             token: ''
         }
-        jwt.token = window.localStorage.getItem('sudo');
+        jwt.token = window.localStorage.getItem('cid');
         if (jwt.token) {
-            await axios.post('http://localhost:3007/verify/collector', jwt)
+            await axios.post('/verify/collector/token', jwt)
                 .then(response => {
                     if (response.data.auth) {
                         this.isAuthenticated = true;
@@ -29,17 +29,17 @@ const CollectorAuth = {
     },
 
     getAuth() {
-        // return this.isAuthenticated;
-        return true
+        return this.isAuthenticated;
+        // return true
     },
 
     getClientId() {
-        // return this.client_id;
-        return 9;
+        return this.client_id;
+        // return 10;
     },
 
     signOutUser() {
-        window.localStorage.removeItem('sudo');
+        window.localStorage.removeItem('cid');
     }
 
 

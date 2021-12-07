@@ -1,22 +1,21 @@
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const config = require('../../config.json');
 const _ = require('lodash');
 
 module.exports = (collectorModel, donorModel, binModel) => {
-    const collectorSignUp = async (req, res) => {
-        const { Firstname, Lastname, Phonenumber, email, Idnumber, password, gender } = req.body;
-        bcrypt.hash(password, 10, async (err, hashedPassword) => {
+    const collectorSignUp = async(req, res) => {
+        const { firstName, lastName, phoneNumber, password } = req.body;
+        bcrypt.hash(password, 10, async(err, hashedPassword) => {
             if (err) console.error(err);
             const account = {
-                firstName: Firstname,
-                lastName: Lastname,
-                cellNumber: Phonenumber,
-                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                cellNumber: phoneNumber,
+                email: '',
                 location: '',
-                idNumber: Idnumber,
-                gender: gender,
+                idNumber: 0,
+                gender: '',
                 age: 0,
                 password: hashedPassword,
                 verification: false,
@@ -26,27 +25,28 @@ module.exports = (collectorModel, donorModel, binModel) => {
             if (!results.response) {
                 res.json({
                     status: 'failure',
-                    reason: 'Account already exists'
+                    reason: 'Account already exists',
+                    isCreated: false
                 })
             } else {
-                // const token = jwt.sign({ userId: results.account.id }, config.secret);
                 res.json({
                     status: 'success',
                     reason: 'Account was created',
-                    // token
+                    isCreated: true
                 });
             }
         });
     }
 
-    const collectorSignIn = async (req, res) => {
-        const { email, password } = req.body;
-        let collector = await collectorModel.findAccountByEmail(email);
+    const collectorSignIn = async(req, res) => {
+        const { phone, password } = req.body;
+        console.log(req.body);
+        let collector = await collectorModel.findAccountByPhoneNumber(phone);
         if (!collector.response) {
 
         } else {
             let hashPassword = collector.account.user_password;
-            bcrypt.compare(password, hashPassword, async (err, userPassword) => {
+            bcrypt.compare(password, hashPassword, async(err, userPassword) => {
                 if (err) console.error(err);
                 if (userPassword) {
                     const token = jwt.sign({ userId: collector.account.id }, config.secret);
@@ -86,10 +86,9 @@ module.exports = (collectorModel, donorModel, binModel) => {
         };
     };
 
-    const getRequests = async (req, res) => {
+    const getRequests = async(req, res) => {
         const { id } = req.body;
-        let collectorId = Number(id);
-        let collector = await collectorModel.findAccountById(collectorId);
+        let collector = await collectorModel.findAccountById(id);
         let bins = await collectorModel.collectFullBins();
         if (bins.length !== 0) {
             let out = _.groupBy(bins, 'waste_donor_id');
@@ -102,37 +101,60 @@ module.exports = (collectorModel, donorModel, binModel) => {
                 newArray.push(getAccounts);
             }
             res.json({
-                status: 'success',
+                status: 200,
                 readyBins: newArray,
-                collector: collector
+                collector: collector,
+                isEmpty: false
             });
+        } else {
+            res.json({
+                status: 200,
+                isEmpty: true
+            })
         }
     }
 
-    const handlePickUpBins = async (req, res) => {
+    const handlePickUpBins = async(req, res) => {
         let { donorId, collectorId, binTypeId } = req.body;
         console.log(binTypeId);
         const bins = Array.isArray(binTypeId) ? binTypeId : [binTypeId];
         for (let x = 0; x < bins.length; x++) {
             const binId = bins[x].id;
             let request = {
-                dateTime: new Date(),
-                donor: donorId,
-                collector: collectorId,
-                wasteBins: binId,
-                status: true
-            }
-            // console.log(request);
+                    dateTime: new Date(),
+                    donor: donorId,
+                    collector: collectorId,
+                    wasteBins: binId,
+                    status: true
+                }
+                // console.log(request);
             await binModel.binActivity(request);
         }
     }
 
-    const collectDonorFullBins = async (req, res) => {
+    const collectDonorFullBins = async(req, res) => {
         let { donorId } = req.body;
         let getBins = await binModel.getBinsReadyForCollection(donorId);
         res.json({
             bins: getBins
         });
+    }
+
+    const getNotifications = async(req, res) => {
+        const { collectorId } = req.body;
+        let notifications = await binModel.getNotificationsForCollectionInProgressForCollector(collectorId);
+        if (notifications.length !== 0) {
+            res.json({
+                status: 200,
+                notifications,
+                isAvailable: true
+            });
+        } else {
+            res.json({
+                status: 200,
+                isAvailable: false
+            });
+        }
     }
 
     return {
@@ -141,6 +163,7 @@ module.exports = (collectorModel, donorModel, binModel) => {
         verifyToken,
         getRequests,
         handlePickUpBins,
-        collectDonorFullBins
+        collectDonorFullBins,
+        getNotifications
     }
 }

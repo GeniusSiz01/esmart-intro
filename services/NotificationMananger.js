@@ -1,12 +1,24 @@
-const notificationMananger = (io) => {
+const notificationMananger = (io, binModel) => {
     io.on("connection", socket => {
-        console.log("new user joined");
-        socket.on("notifications", (data) => {
-            console.log(data);
+        socket.on("notifications", async (data) => {
+            const { collectorId } = data;
+            let res = await binModel.getNotificationsForCollectionInProgressForCollector(collectorId);
+            console.log(res);
+            socket.emit("");
         });
+
+        socket.on("request", () => {
+            console.log('request sent');
+            socket.emit("get request");
+        });
+
+        socket.on("get request", () => {
+            console.log("getting request");
+            socket.emit("get current requests");
+        })
     });
-}
+};
 
 module.exports = {
     notificationMananger
-}
+};

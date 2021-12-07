@@ -66,7 +66,7 @@ export default function DonorNavigation() {
                     <BottomNavigationAction value='home' label="Home" icon={<HomeIcon />} />
                     <BottomNavigationAction value='bins' label="Bins" icon={<FavoriteIcon />} />
                     <BottomNavigationAction value='notifications' label="Notifications" icon={<Notifications />} />
-                    <BottomNavigationAction value='history' label="History" icon={<ArchiveIcon />} />
+                    {/* <BottomNavigationAction value='history' label="History" icon={<ArchiveIcon />} /> */}
                 </BottomNavigation>
             </Paper>
         </Box>

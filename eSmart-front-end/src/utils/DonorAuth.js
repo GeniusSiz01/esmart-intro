@@ -11,11 +11,13 @@ const DonorAuth = {
         }
         jwt.token = window.localStorage.getItem('sudo');
         if (jwt.token) {
-            await axios.post('http://localhost:3007/verify/donor', jwt)
+            await axios.post('/verify/donor/token', jwt)
                 .then(response => {
                     if (response.data.auth) {
                         this.isAuthenticated = true;
                         this.client_id = response.data.userId;
+                    } else {
+                        console.log('user not signed in');
                     }
                 });
 
@@ -29,13 +31,13 @@ const DonorAuth = {
     },
 
     getAuth() {
-        // return this.isAuthenticated;
-        return true
+        return this.isAuthenticated;
+        // return true
     },
 
     getClientId() {
-        // return this.client_id;
-        return 10;
+        return this.client_id;
+        // return 11;
     },
 
     signOutUser() {

@@ -1,7 +1,6 @@
 import React from "react";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
@@ -39,7 +38,7 @@ export default class ReadyForCollectionBins extends React.Component {
         let params = {
             userId
         };
-        axios.post(`http://localhost:8000/donor/get/requests`, params)
+        axios.post(`/donor/get/requests`, params)
             .then(response => {
                 let binsArray = response.data;
                 this.setState({ bins: binsArray.bins });
@@ -57,7 +56,7 @@ export default class ReadyForCollectionBins extends React.Component {
     renderBins = () => {
         let { bins } = this.state;
         if (bins.length !== 0) {
-            return <List className='center' sx={{ width: '100%', bgcolor: 'rgba(82, 183, 136, 0.74)', borderRadius: '12px' }}>
+            return <List className='center' sx={{ width: '95%', bgcolor: 'rgba(82, 183, 136, 0.74)', borderRadius: '12px', margin: '12px' }}>
                 {bins.map((list) => (
                     <div onClick={this.handleClickOpen}>
                         <ListItem alignItems="flex-start">
@@ -84,6 +83,7 @@ export default class ReadyForCollectionBins extends React.Component {
                         <Box sx={{ width: '100%' }}>
                             <LinearProgress color='info' />
                         </Box>
+                        
                     </div>
                 ))}
 

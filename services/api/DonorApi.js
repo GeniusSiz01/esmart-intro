@@ -1,22 +1,21 @@
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const config = require('../../config.json');
 
 module.exports = (donorModel, binModel) => {
 
-    const donorSignUp = async (req, res) => {
-        const { Firstname, Lastname, Phonenumber, email, Idnumber, password, gender } = req.body;
-        bcrypt.hash(password, 10, async (err, hashedPassword) => {
+    const donorSignUp = async(req, res) => {
+        const { firstName, lastName, phoneNumber, password } = req.body;
+        bcrypt.hash(password, 10, async(err, hashedPassword) => {
             if (err) console.error(err);
             const account = {
-                firstName: Firstname,
-                lastName: Lastname,
-                cellNumber: Phonenumber,
-                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                cellNumber: phoneNumber,
+                email: '',
                 residentialAddress: '',
-                idNumber: Idnumber,
-                gender: gender,
+                idNumber: 0,
+                gender: '',
                 age: 0,
                 password: hashedPassword,
                 verification: false,
@@ -25,22 +24,23 @@ module.exports = (donorModel, binModel) => {
             if (results.response === false) {
                 res.json({
                     status: 'failure',
-                    reason: 'Account already exists'
+                    reason: 'Account already exists',
+                    isCreated: false
                 })
             } else {
-                // const token = jwt.sign({ userId: results.account.id }, config.secret);
                 res.json({
                     status: 'success',
                     reason: 'Created account',
-                    token
+                    isCreated: true
                 });
             }
         });
     }
 
-    const donorSignIn = async (req, res) => {
-        const { email, password } = req.body;
-        let donor = await donorModel.findAccountByEmail(email);
+    const donorSignIn = async(req, res) => {
+        const { phone, password } = req.body;
+        console.log(req.body);
+        let donor = await donorModel.findAccountByPhoneNumber(phone);
         if (donor.response === false) {
             res.json({
                 status: "failure",
@@ -48,7 +48,7 @@ module.exports = (donorModel, binModel) => {
             });
         } else {
             let hashPassword = donor.account.user_password;
-            bcrypt.compare(password, hashPassword, async (err, userPassword) => {
+            bcrypt.compare(password, hashPassword, async(err, userPassword) => {
                 if (err) console.error(err);
                 if (userPassword) {
                     const token = jwt.sign({ userId: donor.account.id }, config.secret);
@@ -86,24 +86,34 @@ module.exports = (donorModel, binModel) => {
         };
     };
 
-    const geBins = async (req, res) => {
+    const geBins = async(req, res) => {
+        const { uid } = req.body;
         let bins = await binModel.getAllBinTypes();
+        let account = await donorModel.findAccountById(uid);;
         res.json({
             status: 'success',
-            bins
+            bins,
+            account
         });
     };
 
-    const sendPickUpRequest = async (req, res) => {
+    const sendPickUpRequest = async(req, res) => {
         const { userId, binId } = req.body;
         let searchQuery = {
             userId,
             binId
         };
-        await binModel.setBinForCollection(searchQuery);
+        let results = await binModel.setBinForCollection(searchQuery);
+        if (results.response) {
+            res.json({
+                status: 'success',
+                isSent: true
+            });
+        }
+
     };
 
-    const getSentRequests = async (req, res) => {
+    const getSentRequests = async(req, res) => {
         const { userId } = req.body;
         let bins = await binModel.getBinsReadyForCollection(userId);
         res.json({
@@ -112,12 +122,30 @@ module.exports = (donorModel, binModel) => {
         })
     }
 
+    const getNotifications = async(req, res) => {
+        const { donorId } = req.body;
+        const notifications = await binModel.getNotificationsForCollectionInProgressForDonor(donorId);
+        if (notifications.length !== 0) {
+            res.json({
+                status: 200,
+                notifications,
+                isAvailable: true
+            });
+        } else {
+            res.json({
+                status: 200,
+                isAvailable: false
+            });
+        }
+    }
+
     return {
         donorSignUp,
         donorSignIn,
         verifyToken,
         geBins,
         sendPickUpRequest,
-        getSentRequests
+        getSentRequests,
+        getNotifications
     }
 }

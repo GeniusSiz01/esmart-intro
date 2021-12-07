@@ -4,10 +4,6 @@ import Container from '@mui/material/Container';
 import DonorNavigation from "./DonorNavigation";
 
 export default class DonorHomeScreen extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <React.Fragment>

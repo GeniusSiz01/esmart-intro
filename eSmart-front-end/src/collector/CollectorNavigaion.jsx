@@ -59,7 +59,7 @@ export default function CollectorNavigation() {
                 >
                     <BottomNavigationAction value='home' label="Home" icon={<HomeIcon />} />
                     <BottomNavigationAction value='notifications' label="Notifications" icon={<FavoriteIcon />} />
-                    <BottomNavigationAction value='history' label="History" icon={<ArchiveIcon />} />
+                    {/* <BottomNavigationAction value='history' label="History" icon={<ArchiveIcon />} /> */}
                 </BottomNavigation>
             </Paper>
         </Box>

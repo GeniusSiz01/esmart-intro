@@ -4,4 +4,6 @@ module.exports = (app, collectorApi) => {
     app.post('/bins/full', collectorApi.getRequests);
     app.post('/collect', collectorApi.handlePickUpBins);
     app.post('/accept/request', collectorApi.collectDonorFullBins);
+    app.post('/verify/collector/token', collectorApi.verifyToken);
+    app.post('/collector/notifications', collectorApi.getNotifications);
 };
