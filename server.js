@@ -29,19 +29,13 @@ const pool = new Pool({
 
 app.use(express());
 
-const port = 8000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(urlencoded({ extended: false }))
 app.use(json());
 app.use(express.static('eSmart-front-end/build'));
-app.listen(
-    port,
-    console.log(
-        `Server is running on the port no: ${(port)} `
-        .green
-    )
-);
+app.listen(PORT, () => `Server is running on the port no: ${(PORT)}`);
 
 
 const binModel = Bins(pool);
