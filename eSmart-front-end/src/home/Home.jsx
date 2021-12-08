@@ -6,8 +6,9 @@ import Stack from '@mui/material/Stack';
 
 export default class Home extends React.Component {
     render() {
+        console.log("home route running");
         return (
-            <div  className='center'>
+            <div className='center'>
                 <div>
                     <Stack spacing={10}>
                         <div>
@@ -19,14 +20,14 @@ export default class Home extends React.Component {
                         </div>
 
                         <div>
-                            <Grid  container spacing={2} columns={16}>
+                            <Grid container spacing={2} columns={16}>
                                 <Grid item xs={8}>
-                                    <a style={{ textDecoration: 'none' }} href="/donor/app">
+                                    <a style={{ textDecoration: 'none' }} href="/#/donor/app">
                                         <Button className='btn1' variant="contained">Waste donor</Button>
                                     </a>
                                 </Grid>
                                 <Grid item xs={8}>
-                                    <a style={{ textDecoration: 'none' }} href="/collector/app">
+                                    <a style={{ textDecoration: 'none' }} href="/#/collector/app">
                                         <Button className='btn1' variant="contained">Waste collector</Button>
                                     </a>
                                 </Grid>

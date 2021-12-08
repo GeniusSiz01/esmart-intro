@@ -22,21 +22,17 @@ if (process.env.DATABASE_URL && !local) {
 const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
 const pool = new Pool({
     connectionString,
-    ssl: { rejectUnauthorized: false }
+    ssl: {rejectUnauthorized: false}
 });
 
-
-
-app.use(express());
-
-const PORT = process.env.PORT || 5000;
-
+// 
 app.use(cors());
 app.use(urlencoded({ extended: false }))
 app.use(json());
-app.use(express.static('eSmart-front-end/build'));
-app.listen(PORT, () => `Server is running on the port no: ${(PORT)}`);
 
+app.use(express());
+app.use(express.static('eSmart-front-end/build'));
+const PORT = process.env.PORT || 8000;
 
 const binModel = Bins(pool);
 const donorModel = Donor(pool);
@@ -45,3 +41,7 @@ const donorApi = DonorApi(donorModel, binModel);
 const collectorApi = CollectorApi(collectorModel, donorModel, binModel);
 DonorRoutes(app, donorApi);
 CollectorRoutes(app, collectorApi);
+
+app.listen(PORT, () => {
+    console.log(`Server is running on the port no: ${(PORT)}`);
+});
