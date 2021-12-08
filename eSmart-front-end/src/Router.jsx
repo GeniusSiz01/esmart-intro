@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect,HashRouter } from "react-router-dom";
 import Home from './home/Home';
 import DonorHomeScreen from './donor/DonorHomeScreen';
 import CollectorHomeScreen from './collector/CollectorHomeScreen';
@@ -14,20 +14,17 @@ export default class Router extends React.Component {
     render() {
         return (
             <div>
-                <BrowserRouter>
+                <HashRouter>
                     <Switch>
-                        <DonorPrivateRoute path="/donor/app" component={DonorHomeScreen} />
-                        <CollectorPrivateRoute path="/collector/app" component={CollectorHomeScreen} />
-
-                        <Route path="/donor/register" >
-                            <DonorLogin />
-                        </Route>
-                        <Route path="/donor/signin" component={DonorSignIn} />
-                        <Route path="/collector/signin" component={CollectorSignIn} />
-                        <Route path="/collector/register" component={CollectorSignUp} />
-                        <Route path="/" component={Home} />
+                        <DonorPrivateRoute path='/donor/app' component={DonorHomeScreen} />
+                        <CollectorPrivateRoute path='/collector/app' component={CollectorHomeScreen} />
+                        <Route path='/donor/register' component={DonorLogin} />
+                        <Route path='/donor/signin' component={DonorSignIn} />
+                        <Route path='/collector/signin' component={CollectorSignIn} />
+                        <Route path='/collector/register' component={CollectorSignUp} />
+                        <Route path='/' component={Home} />
                     </Switch>
-                </BrowserRouter>
+                </HashRouter>
             </div>
         );
     }

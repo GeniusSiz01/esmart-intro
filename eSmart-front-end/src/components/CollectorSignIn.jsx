@@ -90,7 +90,7 @@ export default class CollectorSignIn extends React.Component {
                         </Message>
                     )}
                     <Message>
-                        New to us? <a href='/collector/register'>Sign Up</a>
+                        New to us? <a href='/#/collector/register'>Sign Up</a>
                     </Message>
                 </Grid.Column>
             </Grid>

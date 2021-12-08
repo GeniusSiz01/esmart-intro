@@ -90,7 +90,7 @@ export default class DonorSignIn extends React.Component {
                         </Message>
                     )}
                     <Message>
-                        New to us? <a href='/donor/register'>Sign Up</a>
+                        New to us? <a href='/#/donor/register'>Sign Up</a>
                     </Message>
                 </Grid.Column>
             </Grid>
