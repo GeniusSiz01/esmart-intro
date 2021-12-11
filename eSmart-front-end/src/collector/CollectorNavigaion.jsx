@@ -5,7 +5,7 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import HomeIcon from '@mui/icons-material/Home';
 import FavoriteIcon from '@mui/icons-material/Notifications';
-import ArchiveIcon from '@mui/icons-material/Restore';
+// import ArchiveIcon from '@mui/icons-material/Restore';
 import Paper from '@mui/material/Paper';
 import CollectorActivity from './CollectorActivity';
 import CollectorNotifications from './CollectorNotifications';

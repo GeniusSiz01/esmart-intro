@@ -8,4 +8,5 @@ module.exports = (app, donorApi) => {
     app.post('/donor/register', donorApi.donorSignUp);
     app.post('/donor/signin', donorApi.donorSignIn);
     app.post('/donor/notifications', donorApi.getNotifications);
+    app.post('/donor/add/address', donorApi.addUserAddress);
 };

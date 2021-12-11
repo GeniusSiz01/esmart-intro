@@ -52,11 +52,22 @@ module.exports = (pool) => {
         }
     }
 
+    const updateAddress = async (did,address) => {
+        const res = await pool.query('select * from waste_donor where id = $1', [did]);
+        if (res.rows.length !== 0) {
+            await pool.query('update waste_donor set residential_address = $1 where id = $2',[address, did]);
+            return {response: true}
+        } else { 
+            return {response: false}
+        }
+    }
+
     return {
         createAccount,
         findAccount,
         findAccountById,
         findAccountByEmail,
-        findAccountByPhoneNumber
+        findAccountByPhoneNumber,
+        updateAddress
     }
 }

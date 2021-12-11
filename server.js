@@ -22,10 +22,10 @@ if (process.env.DATABASE_URL && !local) {
 const connectionString = process.env.DATABASE_URL || "postgresql://pgadmin:pg123@localhost:5432/e_smart";
 const pool = new Pool({
     connectionString,
-    ssl: {rejectUnauthorized: false}
+    ssl: useSSL
 });
 
-// 
+// {rejectUnauthorized: false}
 app.use(cors());
 app.use(urlencoded({ extended: false }))
 app.use(json());
@@ -45,3 +45,5 @@ CollectorRoutes(app, collectorApi);
 app.listen(PORT, () => {
     console.log(`Server is running on the port no: ${(PORT)}`);
 });
+
+// "proxy": "http://localhost:8000",

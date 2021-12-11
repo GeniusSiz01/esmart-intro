@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Redirect,HashRouter } from "react-router-dom";
+import { Switch, Route, Redirect, HashRouter } from "react-router-dom";
 import Home from './home/Home';
 import DonorHomeScreen from './donor/DonorHomeScreen';
 import CollectorHomeScreen from './collector/CollectorHomeScreen';

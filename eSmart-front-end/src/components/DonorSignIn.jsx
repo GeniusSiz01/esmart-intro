@@ -26,6 +26,7 @@ export default class DonorSignIn extends React.Component {
 
     loginSubmit = async (e) => {
         e.preventDefault();
+        console.log("sending log in");
         this.setState({ isLoading: true });
         let password = e.target.password.value;
         let phone = e.target.phone.value;
@@ -33,9 +34,9 @@ export default class DonorSignIn extends React.Component {
         newPhone = newPhone.slice(1, newPhone.length);
         newPhone = '+27' + newPhone.trim();
         const user = auth.currentUser;
+        console.log(user);
         if (user !== null) {
             const firebasePhone = user.phoneNumber;
-
             if (newPhone !== '+27') {
                 console.log(newPhone);
                 if (newPhone === firebasePhone) {
@@ -46,7 +47,6 @@ export default class DonorSignIn extends React.Component {
                         if (data.auth) {
                             window.localStorage.setItem('sudo', data.token);
                             this.setState({ isLoading: false, isAuthenticated: true });
-
                         } else {
                             this.setState({ isLoading: false, isError: true, errorMsg: 'You password or phone number is incorrect' });
                         }
@@ -59,6 +59,21 @@ export default class DonorSignIn extends React.Component {
                 this.setState({ isLoading: false, isError: true, errorMsg: 'Please enter your password and phone number' });
                 console.log('please enter phone');
             }
+        } else if (!password && !phone) {
+            this.setState({ isLoading: false, isError: true, errorMsg: 'Please enter your password and phone number' });
+        } else {
+
+            let body = { phone: newPhone, password }
+            axios.post('/donor/signin', body).then(async response => {
+                const data = response.data;
+                console.log(data);
+                if (data.auth) {
+                    window.localStorage.setItem('sudo', data.token);
+                    this.setState({ isLoading: false, isAuthenticated: true });
+                } else {
+                    this.setState({ isLoading: false, isError: true, errorMsg: data.reason });
+                }
+            });
         }
     }
 
