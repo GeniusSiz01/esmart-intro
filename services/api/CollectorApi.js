@@ -43,7 +43,12 @@ module.exports = (collectorModel, donorModel, binModel) => {
         console.log(req.body);
         let collector = await collectorModel.findAccountByPhoneNumber(phone);
         if (!collector.response) {
-
+            res.json({
+                status: "failure",
+                reason: "Account not found",
+                auth: false,
+                
+            });
         } else {
             let hashPassword = collector.account.user_password;
             bcrypt.compare(password, hashPassword, async(err, userPassword) => {
@@ -60,7 +65,7 @@ module.exports = (collectorModel, donorModel, binModel) => {
                 } else {
                     res.json({
                         status: 'failure',
-                        reason: 'Incorrect password',
+                        reason: 'Password or phone number is incorrect',
                         auth: false
                     })
                 }
@@ -157,6 +162,24 @@ module.exports = (collectorModel, donorModel, binModel) => {
         }
     }
 
+    const endTrip = async (req,res) => { 
+        const { cid } = req.body;
+console.log(req.body);
+        let status = await binModel.closePickUpRequest(cid);
+        if (status.response) {
+            res.json({
+                status:200,
+                isEnded: true,
+            });
+        }else{
+            res.json({
+                status:200,
+                isEnded: false,
+            });
+        }
+
+    }
+
     return {
         collectorSignUp,
         collectorSignIn,
@@ -164,6 +187,7 @@ module.exports = (collectorModel, donorModel, binModel) => {
         getRequests,
         handlePickUpBins,
         collectDonorFullBins,
-        getNotifications
+        getNotifications,
+        endTrip
     }
 }

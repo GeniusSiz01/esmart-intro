@@ -18,7 +18,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import CollectorAuth from "../utils/CollectorAuth";
-import NotificationSnackBar from "../components/NotificationSnackBar";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper
@@ -128,7 +127,7 @@ export default class CollectorActivity extends React.Component {
                         </ListItemAvatar>
                         <ListItemText
                           primary={`${list.name} waste`}
-                          secondary={"Secondary text"}
+                          // secondary={"Secondary text"}
                         />
                       </ListItem>
                     )}
@@ -138,8 +137,9 @@ export default class CollectorActivity extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleAccept}>close</Button>
-            <NotificationSnackBar open={true} />
+            <Button onClick={this.handleClose}>close</Button>
+            <Button onClick={this.handleAccept}>accept</Button>
+            {/* <NotificationSnackBar open={true} /> */}
           </DialogActions>
         </Dialog>
       </div>

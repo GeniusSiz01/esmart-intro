@@ -51,16 +51,23 @@ module.exports = (pool) => {
     };
 
     const setBinForCollection = async searchQuery => {
-        console.log(searchQuery);
         let res = await pool.query('select * from waste_bin where waste_donor_id = $1 and waste_type_id = $2', [searchQuery.userId, searchQuery.binId]);
-        console.log(res.rows);
-        if (res.rows.length === 0) {
-            await pool.query('insert into waste_bin (waste_donor_id, waste_type_id, status, timestamp) values ($1, $2, $3, $4)', [searchQuery.userId, searchQuery.binId, true, new Date()]);
+        
+        if (res.rows.length !== 0) {
+            res.rows.forEach(async bins => {
+                console.log(bins.id);
+                console.log(bins.status);
+                if (!bins.status) {
+                    await pool.query('insert into waste_bin (waste_donor_id, waste_type_id, status, timestamp) values ($1, $2, $3, $4)', [searchQuery.userId, searchQuery.binId, true, new Date()]);
+                }else { 
+                    console.log('Request has already bin sent');
+                }               
+            });
             return { response: true }
         } else {
+            await pool.query('insert into waste_bin (waste_donor_id, waste_type_id, status, timestamp) values ($1, $2, $3, $4)', [searchQuery.userId, searchQuery.binId, true, new Date()]);
             // await pool.query('update waste_bin set status = $1, filled_capacity = 99 where waste_donor_id = $2 and id = $3', [true, searchQuery.userId, searchQuery.binId]);
-            console.log('Request has already bin sent');
-            return { response: false }
+            return { response: true }
         };
     };
 
@@ -74,22 +81,24 @@ module.exports = (pool) => {
     };
 
     const getNotificationsForCollectionInProgressForCollector = async (id) => {
-        let res = await pool.query('select waste_bin_collection_activity.id, waste_bin_collection_activity.date_time, waste_bin_collection_activity.status, waste_bin_collection_activity.waste_donor_id, waste_donor.firstname, waste_donor.lastname, waste_type.name from waste_bin_collection_activity inner join waste_donor on waste_donor.id = waste_bin_collection_activity.waste_donor_id inner join waste_type on waste_type.id = waste_bin_collection_activity.waste_type_id where waste_collector_id = $1 ', [id]);
+        let res = await pool.query('select waste_bin_collection_activity.id, waste_bin_collection_activity.date_time, waste_bin_collection_activity.status, waste_bin_collection_activity.waste_donor_id, waste_donor.firstname, waste_donor.lastname, waste_donor.residential_address, waste_donor.cell_number, waste_type.name from waste_bin_collection_activity inner join waste_donor on waste_donor.id = waste_bin_collection_activity.waste_donor_id inner join waste_type on waste_type.id = waste_bin_collection_activity.waste_type_id where waste_collector_id = $1 and status = true ', [id]);
         return res.rows;
     };
 
     const getNotificationsForCollectionInProgressForDonor = async id => {
-        let res = await pool.query('select waste_bin_collection_activity.date_time, waste_bin_collection_activity.status, waste_bin_collection_activity.waste_donor_id, waste_bin_collection_activity.waste_collector_id, waste_donor.firstname, waste_donor.lastname, waste_type.name, waste_collector.first_name, waste_collector.last_name from waste_bin_collection_activity inner join waste_donor on waste_donor.id = waste_bin_collection_activity.waste_donor_id inner join waste_type on waste_type.id = waste_bin_collection_activity.waste_type_id inner join waste_collector on waste_collector.id = waste_bin_collection_activity.waste_collector_id where waste_donor_id = $1', [id]);
+        let res = await pool.query('select waste_bin_collection_activity.date_time, waste_bin_collection_activity.status, waste_bin_collection_activity.waste_donor_id, waste_bin_collection_activity.waste_collector_id, waste_donor.firstname, waste_donor.lastname, waste_type.name, waste_collector.first_name, waste_collector.last_name from waste_bin_collection_activity inner join waste_donor on waste_donor.id = waste_bin_collection_activity.waste_donor_id inner join waste_type on waste_type.id = waste_bin_collection_activity.waste_type_id inner join waste_collector on waste_collector.id = waste_bin_collection_activity.waste_collector_id where waste_donor_id = $1 and status = true', [id]);
         return res.rows;
     };
 
-    const closePickUpRequest = async request => {
-        let res = await pool.query('select * from waste_bin_collection_activity where status = true');
-        for (let x = 0; x < res.rows.length; x++) {
-            const bin = res.rows[x];
-            await pool.query('update waste_bin_collection_activity set status = false, date_time = $1 where id = $2', [new Date(), bin.id]);
+    const closePickUpRequest = async wcid => {
+        console.log(wcid);
+        let res = await pool.query('select * from waste_bin_collection_activity where status = true and waste_collector_id = $1', [wcid]);
+        if (res.rows.length !== 0) {
+            await pool.query('update waste_bin_collection_activity set status = false, date_time = $1 where waste_collector_id = $2 and status = true', [new Date(), wcid]);
+            return { response: true }
+        } else { 
+            return { response: false }
         }
-
     }
     return {
         createBins,

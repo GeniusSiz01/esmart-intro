@@ -10,6 +10,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DonorAuth from "../utils/DonorAuth";
+import UserAddressInput from "../components/UserAddressInput";
 
 
 export default class BinsHome extends React.Component {
@@ -24,6 +25,7 @@ export default class BinsHome extends React.Component {
             userId: DonorAuth.getClientId(),
             binToCollect: [],
             isLoading: false,
+            openUserModal: false
         }
     }
 
@@ -31,7 +33,12 @@ export default class BinsHome extends React.Component {
         let body = { uid: this.state.userId }
         await axios.post(`/donor/home`, body)
             .then(response => {
+                console.log(response.data.account);
                 let binsArray = response.data;
+                if (!response.data.account.residential_address) {
+                    console.log('empty');
+                    this.setState({ openUserModal: true })
+                }
                 this.setState({ bins: binsArray.bins, firstName: binsArray.account.firstname, lastName: binsArray.account.lastname });
             });
     }
@@ -102,13 +109,45 @@ export default class BinsHome extends React.Component {
         );
     }
 
+    renderUserModal = () => {
+        return (
+            <div>
+
+                <Dialog
+                    fullScreen={this.state.fullScreen}
+                    open={this.state.openUserModal}
+                    onClose={this.handleClose}
+                    aria-labelledby="responsive-dialog-title"
+                >
+                    <DialogTitle id="responsive-dialog-title">
+                        {"Residential Address Request?"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            eSmart is requires your residential address for the best experiance on the app.
+                        </DialogContentText>
+                        <UserAddressInput did={this.state.userId} />
+                    </DialogContent>
+                    {/* <DialogActions>
+                        <Button onClick={this.handleClose}>
+                            Cancel request
+                        </Button>
+                        <Button onClick={this.handleRequest} >
+                            Agree
+                        </Button>
+                    </DialogActions> */}
+                </Dialog>
+            </div>
+        );
+    }
+
 
     render() {
         let { bins, firstName } = this.state;
         return (
             <div>
                 <h3 className='center'>Welcome to eSmart {firstName}</h3>
-                <Box className='center' sx={{ width: '100%',paddingTop:'30%' }}>
+                <Box className='center' sx={{ width: '100%', paddingTop: '30%' }}>
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                         {bins.map((list) => (
                             <Grid item xs={6} key={list.id}>
@@ -125,6 +164,7 @@ export default class BinsHome extends React.Component {
                     <LinearProgress color="success" />
                 </Box> */}
                 {this.renderModal()}
+                {this.renderUserModal()}
             </div>
         );
     }

@@ -19,6 +19,7 @@ export default class DonorNotifications extends React.Component {
         let body = { donorId: this.state.did };
         await axios.post('/donor/notifications', body).then(response => {
             if (response.data.isAvailable) {
+                console.log();
                 this.setState({ notifications: response.data.notifications[0], viewNotification: response.data.isAvailable });
             }
         })

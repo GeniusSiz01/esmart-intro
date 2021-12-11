@@ -44,7 +44,9 @@ module.exports = (donorModel, binModel) => {
         if (donor.response === false) {
             res.json({
                 status: "failure",
-                reason: "Account not found"
+                reason: "Account not found",
+                auth: false,
+
             });
         } else {
             let hashPassword = donor.account.user_password;
@@ -61,7 +63,7 @@ module.exports = (donorModel, binModel) => {
                 } else {
                     res.json({
                         status: 'failure',
-                        reason: 'Password incorrect',
+                        reason: 'Password or phone number is incorrect',
                         auth: false
                     })
                 }
@@ -90,6 +92,7 @@ module.exports = (donorModel, binModel) => {
         const { uid } = req.body;
         let bins = await binModel.getAllBinTypes();
         let account = await donorModel.findAccountById(uid);;
+
         res.json({
             status: 'success',
             bins,
@@ -139,6 +142,23 @@ module.exports = (donorModel, binModel) => {
         }
     }
 
+    const addUserAddress = async(req,res) => {
+        const {address, donorId} = req.body;
+        console.log(req.body);
+        const isAdded = await donorModel.updateAddress(donorId, address);
+        if (isAdded.response) {
+            res.json({
+                status:200,
+                isAdded
+            });
+        }else { 
+            res.json({
+                status:200,
+                isAdded
+            });
+        }
+     }
+
     return {
         donorSignUp,
         donorSignIn,
@@ -146,6 +166,7 @@ module.exports = (donorModel, binModel) => {
         geBins,
         sendPickUpRequest,
         getSentRequests,
-        getNotifications
+        getNotifications,
+        addUserAddress
     }
 }

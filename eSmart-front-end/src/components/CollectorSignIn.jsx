@@ -59,6 +59,19 @@ export default class CollectorSignIn extends React.Component {
                 this.setState({ isLoading: false, isError: true, errorMsg: 'Please enter your password and phone number' });
                 console.log('please enter phone');
             }
+        } else if (!password && !phone) {
+            this.setState({ isLoading: false, isError: true, errorMsg: 'Please enter your password and phone number' });
+        } else {
+            let body = { phone: newPhone, password }
+            axios.post('/collector/signin', body).then(async response => {
+                const data = response.data;
+                if (data.auth) {
+                    window.localStorage.setItem('cid', data.token);
+                    this.setState({ isLoading: false, isAuthenticated: true });
+                } else {
+                    this.setState({ isLoading: false, isError: true, errorMsg: data.reason });
+                }
+            });
         }
     }
 
